@@ -1,0 +1,11 @@
+apiVersion: 1
+
+providers:
+  - name: 'Dashboards Equipe'
+    orgId: 1
+    folder: ''
+    type: file
+    disableDeletion: false
+    updateIntervalSeconds: 10 # Grafana vérifie les modifs toutes les 10s
+    options:
+      path: /var/lib/grafana/dashboards

@@ -64,6 +64,10 @@ services:
     restart: always
     ports:
       - "3000:3000"
+    volumes:
+      # On injecte la configuration & les fichiers json
+      - ./grafana/provisioning/dashboards:/etc/grafana/provisioning/dashboards
+      - ./grafana/dashboards:/var/lib/grafana/dashboards
     links:
       - mariadb
     networks:
