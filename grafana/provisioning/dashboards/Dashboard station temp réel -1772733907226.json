@@ -1,0 +1,1593 @@
+{
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": 1,
+  "links": [],
+  "panels": [
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "afe8h06ue0xkwb"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 5,
+        "x": 0,
+        "y": 0
+      },
+      "id": 1,
+      "options": {
+        "colorMode": "none",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/.*/",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "dataset": "kpi_db",
+          "datasource": {
+            "type": "mysql",
+            "uid": "afe8h06ue0xkwb"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT '${dept}' AS Departement;",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Departement",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "afe8h06ue0xkwb"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 5,
+        "x": 6,
+        "y": 0
+      },
+      "id": 2,
+      "options": {
+        "colorMode": "none",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/.*/",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "dataset": "kpi_db",
+          "datasource": {
+            "type": "mysql",
+            "uid": "afe8h06ue0xkwb"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT '${wc}' AS WorkCenter;",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Station",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "afe8h06ue0xkwb"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 10,
+        "x": 12,
+        "y": 0
+      },
+      "id": 3,
+      "options": {
+        "colorMode": "none",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/.*/",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "value",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "dataset": "kpi_db",
+          "datasource": {
+            "type": "mysql",
+            "uid": "afe8h06ue0xkwb"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT '${of}' AS OF_Num;",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Numéro d'OF",
+      "transparent": true,
+      "type": "stat"
+    },
+    {
+      "collapsed": true,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 3
+      },
+      "id": 11,
+      "panels": [
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "afe8h06ue0xkwb"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "fieldMinMax": false,
+              "mappings": [],
+              "min": 0,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "red",
+                    "value": 80
+                  }
+                ]
+              },
+              "unit": "h"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 8,
+            "w": 11,
+            "x": 0,
+            "y": 4
+          },
+          "id": 4,
+          "options": {
+            "minVizHeight": 75,
+            "minVizWidth": 75,
+            "orientation": "auto",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "/^worked_h$/",
+              "values": false
+            },
+            "showThresholdLabels": true,
+            "showThresholdMarkers": true,
+            "sizing": "auto"
+          },
+          "pluginVersion": "12.3.2",
+          "targets": [
+            {
+              "dataset": "kpi_db",
+              "editorMode": "code",
+              "format": "table",
+              "rawQuery": true,
+              "rawSql": "SELECT\r\n  -- Début réel\r\n  DATE_FORMAT(MIN(start_dt), '%d/%m %H:%i') AS real_start_short,\r\n\r\n  -- Temps (heures)\r\n  ROUND(SUM(worked_h), 2) AS worked_h,\r\n  ROUND(SUM(planned_h), 2) AS planned_h,\r\n\r\n  -- Fin théorique = début réel + planned_h\r\n  DATE_FORMAT(\r\n    DATE_ADD(MIN(start_dt), INTERVAL ROUND(SUM(planned_h) * 3600) SECOND),\r\n    '%d/%m %H:%i'\r\n  ) AS theo_end_short,\r\n\r\n  -- Retard vs fin théorique (h) : >0 retard\r\n  ROUND(\r\n    TIMESTAMPDIFF(\r\n      SECOND,\r\n      DATE_ADD(MIN(start_dt), INTERVAL ROUND(SUM(planned_h) * 3600) SECOND),\r\n      NOW()\r\n    ) / 3600,\r\n    2\r\n  ) AS delay_vs_theo_end_h,\r\n\r\n  -- Paramètres gauge\r\n  ROUND(SUM(planned_h), 2) AS gauge_max_h,\r\n  ROUND(SUM(planned_h) * 0.90, 2) AS thr_orange,\r\n  ROUND(SUM(planned_h) * 1.00, 2) AS thr_red\r\n\r\nFROM (\r\n  SELECT\r\n    OperationDescription,\r\n    -- start réel (on prend le premier start observé sur les lignes)\r\n    MIN(STR_TO_DATE(AdjustedStartTime, '%Y-%m-%d %H:%i:%s.%f')) AS start_dt,\r\n\r\n    -- réel = somme des lignes\r\n    SUM(COALESCE(TotalLaborRunHours_Actual, 0)) AS worked_h,\r\n\r\n    -- prévu = une seule fois par sous-op\r\n    MAX(COALESCE(PlannedRunHours, 0)) AS planned_h\r\n\r\n  FROM ShopActivityHistorical\r\n  WHERE DepartmentNum = '${dept}'\r\n    AND WorkCenterNum = '${wc}'\r\n    AND OrderNum = '${of}'\r\n    AND AdjustedStartTime IS NOT NULL\r\n  GROUP BY OperationDescription\r\n) t;",
+              "refId": "A",
+              "sql": {
+                "columns": [
+                  {
+                    "parameters": [],
+                    "type": "function"
+                  }
+                ],
+                "groupBy": [
+                  {
+                    "property": {
+                      "type": "string"
+                    },
+                    "type": "groupBy"
+                  }
+                ],
+                "limit": 50
+              }
+            }
+          ],
+          "title": "Jauge temps de travail",
+          "transformations": [
+            {
+              "id": "configFromData",
+              "options": {
+                "configRefId": "A",
+                "mappings": [
+                  {
+                    "fieldName": "gauge_max_h",
+                    "handlerKey": "max"
+                  },
+                  {
+                    "fieldName": "thr_orange",
+                    "handlerArguments": {
+                      "threshold": {
+                        "color": "orange"
+                      }
+                    },
+                    "handlerKey": "threshold1"
+                  },
+                  {
+                    "fieldName": "thr_red",
+                    "handlerKey": "threshold1"
+                  }
+                ]
+              }
+            }
+          ],
+          "type": "gauge"
+        },
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "afe8h06ue0xkwb"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "fieldMinMax": false,
+              "mappings": [],
+              "min": 0,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "red",
+                    "value": 0.01
+                  }
+                ]
+              },
+              "unit": "h"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 3,
+            "w": 8,
+            "x": 11,
+            "y": 4
+          },
+          "id": 7,
+          "options": {
+            "colorMode": "none",
+            "graphMode": "area",
+            "justifyMode": "auto",
+            "orientation": "auto",
+            "percentChangeColorMode": "standard",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "/^delay_h$/",
+              "values": false
+            },
+            "showPercentChange": false,
+            "textMode": "auto",
+            "wideLayout": true
+          },
+          "pluginVersion": "12.3.2",
+          "targets": [
+            {
+              "dataset": "kpi_db",
+              "editorMode": "code",
+              "format": "table",
+              "rawQuery": true,
+              "rawSql": "SELECT\r\n  ROUND(SUM(t.worked_h), 2) AS worked_h,\r\n  ROUND(SUM(t.planned_h), 2) AS planned_h,\r\n\r\n  /* max de gauge = planned (fixe) */\r\n  ROUND(SUM(t.planned_h), 2) AS gauge_max_h,\r\n\r\n  /* seuils dynamiques basés sur planned */\r\n  ROUND(SUM(t.planned_h) * 0.90, 2) AS thr_orange,\r\n  ROUND(SUM(t.planned_h), 2) AS thr_red,\r\n\r\n  /* infos complémentaires */\r\n  ROUND(GREATEST(SUM(t.planned_h) - SUM(t.worked_h), 0), 2) AS remaining_h,\r\n  ROUND(GREATEST(SUM(t.worked_h) - SUM(t.planned_h), 0), 2) AS delay_h,\r\n  ROUND(SUM(t.worked_h) - SUM(t.planned_h), 2) AS delta_h\r\nFROM (\r\n  SELECT\r\n    s.DepartmentNum,\r\n    s.WorkCenterNum,\r\n    s.OrderNum,\r\n    s.OperationDescription,\r\n    SUM(COALESCE(s.TotalLaborRunHours_Actual, 0)) AS worked_h,\r\n    MAX(COALESCE(s.PlannedRunHours, 0)) AS planned_h\r\n  FROM ShopActivityHistorical s\r\n  WHERE s.DepartmentNum = '${dept}'\r\n    AND s.WorkCenterNum = '${wc}'\r\n    AND s.OrderNum = '${of}'\r\n  GROUP BY\r\n    s.DepartmentNum,\r\n    s.WorkCenterNum,\r\n    s.OrderNum,\r\n    s.OperationDescription\r\n) t;",
+              "refId": "A",
+              "sql": {
+                "columns": [
+                  {
+                    "parameters": [],
+                    "type": "function"
+                  }
+                ],
+                "groupBy": [
+                  {
+                    "property": {
+                      "type": "string"
+                    },
+                    "type": "groupBy"
+                  }
+                ],
+                "limit": 50
+              }
+            }
+          ],
+          "title": "Retard ",
+          "transformations": [
+            {
+              "id": "configFromData",
+              "options": {
+                "configRefId": "A",
+                "mappings": [
+                  {
+                    "fieldName": "gauge_max_h",
+                    "handlerKey": "max"
+                  },
+                  {
+                    "fieldName": "thr_orange",
+                    "handlerArguments": {
+                      "threshold": {
+                        "color": "orange"
+                      }
+                    },
+                    "handlerKey": "threshold1"
+                  },
+                  {
+                    "fieldName": "thr_red",
+                    "handlerKey": "threshold1"
+                  }
+                ]
+              }
+            }
+          ],
+          "type": "stat"
+        },
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "afe8h06ue0xkwb"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "fieldMinMax": false,
+              "mappings": [
+                {
+                  "options": {
+                    "0>": {
+                      "color": "green",
+                      "index": 0
+                    }
+                  },
+                  "type": "value"
+                }
+              ],
+              "min": 0,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  },
+                  {
+                    "color": "red",
+                    "value": 0
+                  }
+                ]
+              },
+              "unit": "h"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 4,
+            "w": 4,
+            "x": 11,
+            "y": 7
+          },
+          "id": 13,
+          "options": {
+            "colorMode": "none",
+            "graphMode": "area",
+            "justifyMode": "auto",
+            "orientation": "auto",
+            "percentChangeColorMode": "standard",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "/^remaining_h$/",
+              "values": false
+            },
+            "showPercentChange": false,
+            "textMode": "auto",
+            "wideLayout": true
+          },
+          "pluginVersion": "12.3.2",
+          "targets": [
+            {
+              "dataset": "kpi_db",
+              "editorMode": "code",
+              "format": "table",
+              "rawQuery": true,
+              "rawSql": "SELECT\r\n  ROUND(SUM(t.worked_h), 2) AS worked_h,\r\n  ROUND(SUM(t.planned_h), 2) AS planned_h,\r\n\r\n  /* max de gauge = planned (fixe) */\r\n  ROUND(SUM(t.planned_h), 2) AS gauge_max_h,\r\n\r\n  /* seuils dynamiques basés sur planned */\r\n  ROUND(SUM(t.planned_h) * 0.90, 2) AS thr_orange,\r\n  ROUND(SUM(t.planned_h), 2) AS thr_red,\r\n\r\n  /* infos complémentaires */\r\n  ROUND(GREATEST(SUM(t.planned_h) - SUM(t.worked_h), 0), 2) AS remaining_h,\r\n  ROUND(GREATEST(SUM(t.worked_h) - SUM(t.planned_h), 0), 2) AS delay_h,\r\n  ROUND(SUM(t.worked_h) - SUM(t.planned_h), 2) AS delta_h\r\nFROM (\r\n  SELECT\r\n    s.DepartmentNum,\r\n    s.WorkCenterNum,\r\n    s.OrderNum,\r\n    s.OperationDescription,\r\n    SUM(COALESCE(s.TotalLaborRunHours_Actual, 0)) AS worked_h,\r\n    MAX(COALESCE(s.PlannedRunHours, 0)) AS planned_h\r\n  FROM ShopActivityHistorical s\r\n  WHERE s.DepartmentNum = '${dept}'\r\n    AND s.WorkCenterNum = '${wc}'\r\n    AND s.OrderNum = '${of}'\r\n  GROUP BY\r\n    s.DepartmentNum,\r\n    s.WorkCenterNum,\r\n    s.OrderNum,\r\n    s.OperationDescription\r\n) t;",
+              "refId": "A",
+              "sql": {
+                "columns": [
+                  {
+                    "parameters": [],
+                    "type": "function"
+                  }
+                ],
+                "groupBy": [
+                  {
+                    "property": {
+                      "type": "string"
+                    },
+                    "type": "groupBy"
+                  }
+                ],
+                "limit": 50
+              }
+            }
+          ],
+          "title": "Temps restant",
+          "transformations": [
+            {
+              "id": "configFromData",
+              "options": {
+                "configRefId": "A",
+                "mappings": [
+                  {
+                    "fieldName": "gauge_max_h",
+                    "handlerKey": "max"
+                  },
+                  {
+                    "fieldName": "thr_orange",
+                    "handlerArguments": {
+                      "threshold": {
+                        "color": "orange"
+                      }
+                    },
+                    "handlerKey": "threshold1"
+                  },
+                  {
+                    "fieldName": "thr_red",
+                    "handlerKey": "threshold1"
+                  }
+                ]
+              }
+            }
+          ],
+          "type": "stat"
+        },
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "afe8h06ue0xkwb"
+          },
+          "fieldConfig": {
+            "defaults": {
+              "color": {
+                "mode": "thresholds"
+              },
+              "fieldMinMax": false,
+              "mappings": [],
+              "min": 0,
+              "thresholds": {
+                "mode": "absolute",
+                "steps": [
+                  {
+                    "color": "green",
+                    "value": 0
+                  }
+                ]
+              },
+              "unit": "h"
+            },
+            "overrides": []
+          },
+          "gridPos": {
+            "h": 4,
+            "w": 4,
+            "x": 15,
+            "y": 7
+          },
+          "id": 14,
+          "options": {
+            "colorMode": "none",
+            "graphMode": "area",
+            "justifyMode": "auto",
+            "orientation": "auto",
+            "percentChangeColorMode": "standard",
+            "reduceOptions": {
+              "calcs": [
+                "lastNotNull"
+              ],
+              "fields": "/^planned_h$/",
+              "values": false
+            },
+            "showPercentChange": false,
+            "textMode": "auto",
+            "wideLayout": true
+          },
+          "pluginVersion": "12.3.2",
+          "targets": [
+            {
+              "dataset": "kpi_db",
+              "editorMode": "code",
+              "format": "table",
+              "rawQuery": true,
+              "rawSql": "SELECT\r\n  ROUND(SUM(t.worked_h), 2) AS worked_h,\r\n  ROUND(SUM(t.planned_h), 2) AS planned_h,\r\n\r\n  /* max de gauge = planned (fixe) */\r\n  ROUND(SUM(t.planned_h), 2) AS gauge_max_h,\r\n\r\n  /* seuils dynamiques basés sur planned */\r\n  ROUND(SUM(t.planned_h) * 0.90, 2) AS thr_orange,\r\n  ROUND(SUM(t.planned_h), 2) AS thr_red,\r\n\r\n  /* infos complémentaires */\r\n  ROUND(GREATEST(SUM(t.planned_h) - SUM(t.worked_h), 0), 2) AS remaining_h,\r\n  ROUND(GREATEST(SUM(t.worked_h) - SUM(t.planned_h), 0), 2) AS delay_h,\r\n  ROUND(SUM(t.worked_h) - SUM(t.planned_h), 2) AS delta_h\r\nFROM (\r\n  SELECT\r\n    s.DepartmentNum,\r\n    s.WorkCenterNum,\r\n    s.OrderNum,\r\n    s.OperationDescription,\r\n    SUM(COALESCE(s.TotalLaborRunHours_Actual, 0)) AS worked_h,\r\n    MAX(COALESCE(s.PlannedRunHours, 0)) AS planned_h\r\n  FROM ShopActivityHistorical s\r\n  WHERE s.DepartmentNum = '${dept}'\r\n    AND s.WorkCenterNum = '${wc}'\r\n    AND s.OrderNum = '${of}'\r\n  GROUP BY\r\n    s.DepartmentNum,\r\n    s.WorkCenterNum,\r\n    s.OrderNum,\r\n    s.OperationDescription\r\n) t;",
+              "refId": "A",
+              "sql": {
+                "columns": [
+                  {
+                    "parameters": [],
+                    "type": "function"
+                  }
+                ],
+                "groupBy": [
+                  {
+                    "property": {
+                      "type": "string"
+                    },
+                    "type": "groupBy"
+                  }
+                ],
+                "limit": 50
+              }
+            }
+          ],
+          "title": "Temps prévu",
+          "transformations": [
+            {
+              "id": "configFromData",
+              "options": {
+                "configRefId": "A",
+                "mappings": [
+                  {
+                    "fieldName": "gauge_max_h",
+                    "handlerKey": "max"
+                  },
+                  {
+                    "fieldName": "thr_orange",
+                    "handlerArguments": {
+                      "threshold": {
+                        "color": "orange"
+                      }
+                    },
+                    "handlerKey": "threshold1"
+                  },
+                  {
+                    "fieldName": "thr_red",
+                    "handlerKey": "threshold1"
+                  }
+                ]
+              }
+            }
+          ],
+          "type": "stat"
+        }
+      ],
+      "title": "Vision par rapport au Takt Théorique",
+      "type": "row"
+    },
+    {
+      "collapsed": false,
+      "gridPos": {
+        "h": 1,
+        "w": 24,
+        "x": 0,
+        "y": 4
+      },
+      "id": 10,
+      "panels": [],
+      "title": "Retard temps de travail effectifs",
+      "type": "row"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "afe8h06ue0xkwb"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 10,
+        "x": 0,
+        "y": 5
+      },
+      "id": 16,
+      "options": {
+        "inlineEditing": true,
+        "panZoom": false,
+        "root": {
+          "background": {
+            "color": {
+              "fixed": "transparent"
+            },
+            "image": {
+              "field": "",
+              "fixed": "img/bg/p0.png",
+              "mode": "field"
+            },
+            "size": "contain"
+          },
+          "border": {
+            "color": {
+              "fixed": "dark-green"
+            }
+          },
+          "constraint": {
+            "horizontal": "left",
+            "vertical": "top"
+          },
+          "elements": [
+            {
+              "background": {
+                "color": {
+                  "fixed": "semi-dark-green"
+                }
+              },
+              "border": {
+                "color": {
+                  "fixed": "dark-green"
+                }
+              },
+              "config": {
+                "align": "center",
+                "color": {
+                  "fixed": "#000000"
+                },
+                "size": 20,
+                "text": {
+                  "field": "real_start_short",
+                  "fixed": "",
+                  "mode": "field"
+                },
+                "valign": "middle"
+              },
+              "constraint": {
+                "horizontal": "left",
+                "vertical": "top"
+              },
+              "links": [],
+              "name": "Fin",
+              "placement": {
+                "height": 50,
+                "left": 216,
+                "rotation": 0,
+                "top": 24,
+                "width": 260
+              },
+              "type": "metric-value"
+            },
+            {
+              "background": {
+                "color": {
+                  "fixed": "dark-red"
+                },
+                "image": {
+                  "fixed": "",
+                  "mode": "fixed"
+                }
+              },
+              "border": {
+                "color": {
+                  "fixed": "dark-green"
+                }
+              },
+              "config": {
+                "align": "center",
+                "color": {
+                  "fixed": "#000000"
+                },
+                "size": 20,
+                "text": {
+                  "field": "theo_end_short",
+                  "fixed": "",
+                  "mode": "field"
+                },
+                "valign": "middle"
+              },
+              "connections": [],
+              "constraint": {
+                "horizontal": "left",
+                "vertical": "top"
+              },
+              "links": [],
+              "name": "Debut",
+              "placement": {
+                "height": 50,
+                "left": 216,
+                "rotation": 0,
+                "top": 125,
+                "width": 260
+              },
+              "type": "metric-value"
+            },
+            {
+              "background": {
+                "color": {
+                  "fixed": "transparent"
+                }
+              },
+              "border": {
+                "color": {
+                  "fixed": "dark-green"
+                }
+              },
+              "config": {
+                "align": "center",
+                "color": {
+                  "fixed": "rgb(204, 204, 220)"
+                },
+                "size": 16,
+                "text": {
+                  "fixed": "Heure de début"
+                },
+                "valign": "middle"
+              },
+              "connections": [],
+              "constraint": {
+                "horizontal": "left",
+                "vertical": "top"
+              },
+              "links": [],
+              "name": "Element 3",
+              "placement": {
+                "height": 50,
+                "left": 19,
+                "rotation": 0,
+                "top": 24,
+                "width": 153
+              },
+              "type": "text"
+            },
+            {
+              "background": {
+                "color": {
+                  "fixed": "transparent"
+                }
+              },
+              "border": {
+                "color": {
+                  "fixed": "dark-green"
+                }
+              },
+              "config": {
+                "align": "center",
+                "color": {
+                  "fixed": "rgb(204, 204, 220)"
+                },
+                "size": 16,
+                "text": {
+                  "fixed": "Heure de fin théorique"
+                },
+                "valign": "middle"
+              },
+              "connections": [],
+              "constraint": {
+                "horizontal": "left",
+                "vertical": "top"
+              },
+              "links": [],
+              "name": "Element 4",
+              "placement": {
+                "height": 50,
+                "left": 19,
+                "rotation": 0,
+                "top": 125,
+                "width": 153
+              },
+              "type": "text"
+            },
+            {
+              "background": {
+                "color": {
+                  "fixed": "transparent"
+                }
+              },
+              "border": {
+                "color": {
+                  "fixed": "dark-green"
+                }
+              },
+              "config": {
+                "fill": {
+                  "fixed": "semi-dark-green"
+                },
+                "path": {
+                  "field": "",
+                  "fixed": "img/icons/unicons/hourglass.svg",
+                  "mode": "fixed"
+                }
+              },
+              "constraint": {
+                "horizontal": "left",
+                "vertical": "top"
+              },
+              "links": [],
+              "name": "Element 5",
+              "placement": {
+                "height": 100,
+                "left": 520,
+                "rotation": 0,
+                "top": 50,
+                "width": 100
+              },
+              "type": "icon"
+            }
+          ],
+          "name": "Element 1772725664225",
+          "placement": {
+            "height": 100,
+            "left": 0,
+            "rotation": 0,
+            "top": 0,
+            "width": 100
+          },
+          "type": "frame"
+        },
+        "showAdvancedTypes": true,
+        "tooltip": {
+          "disableForOneClick": true,
+          "mode": "single"
+        },
+        "zoomToContent": false
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "dataset": "kpi_db",
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  DATE_FORMAT(MIN(start_dt), '%d/%m %H:%i') AS real_start_short,\r\n\r\n  ROUND(SUM(worked_h), 2)  AS worked_h,\r\n  ROUND(SUM(planned_h), 2) AS planned_h,\r\n\r\n  DATE_FORMAT(\r\n    DATE_ADD(MIN(start_dt), INTERVAL ROUND(SUM(planned_h) * 3600) SECOND),\r\n    '%d/%m %H:%i'\r\n  ) AS theo_end_short,\r\n\r\n  ROUND(GREATEST(SUM(planned_h) - SUM(worked_h), 0), 2) AS remaining_h,\r\n\r\n  ROUND(GREATEST(\r\n    TIMESTAMPDIFF(\r\n      SECOND,\r\n      DATE_ADD(MIN(start_dt), INTERVAL ROUND(SUM(planned_h) * 3600) SECOND),\r\n      NOW()\r\n    ) / 3600, 0\r\n  ), 2) AS delay_pos_h,\r\n\r\n  -- jauge Canvas en %\r\n  LEAST(\r\n    ROUND(\r\n      100 * IFNULL(SUM(worked_h) / NULLIF(SUM(planned_h), 0), 0),\r\n      1\r\n    ),\r\n    200\r\n  ) AS pct_100\r\n\r\nFROM (\r\n  SELECT\r\n    OperationDescription,\r\n    MIN(STR_TO_DATE(AdjustedStartTime, '%Y-%m-%d %H:%i:%s.%f')) AS start_dt,\r\n    SUM(COALESCE(TotalLaborRunHours_Actual, 0)) AS worked_h,\r\n    MAX(COALESCE(PlannedRunHours, 0)) AS planned_h\r\n  FROM ShopActivityHistorical\r\n  WHERE DepartmentNum = '${dept}'\r\n    AND WorkCenterNum = '${wc}'\r\n    AND OrderNum = '${of}'\r\n    AND ('${Operation}' = 'ALL' OR OrderStepSequenceNum = '${Operation}')\r\n    AND AdjustedStartTime IS NOT NULL\r\n  GROUP BY OperationDescription\r\n) t;",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "New panel",
+      "transparent": true,
+      "type": "canvas"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "afe8h06ue0xkwb"
+      },
+      "description": "Vert < 90% du prévu • Orange 90–100% • Rouge > 100%",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "fieldMinMax": false,
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "h  "
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 10,
+        "w": 13,
+        "x": 11,
+        "y": 5
+      },
+      "id": 12,
+      "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/^worked_h$/",
+          "values": false
+        },
+        "showThresholdLabels": true,
+        "showThresholdMarkers": true,
+        "sizing": "auto",
+        "text": {}
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "dataset": "kpi_db",
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  ROUND(SUM(t.worked_h), 2)  AS worked_h,\r\n  ROUND(SUM(t.planned_h), 2) AS planned_h,\r\n\r\n  /* max de gauge = planned (fixe) */\r\n  ROUND(SUM(t.planned_h), 2) AS gauge_max_h,\r\n\r\n  /* seuils dynamiques basés sur planned */\r\n  ROUND(SUM(t.planned_h) * 0.90, 2) AS thr_orange,\r\n  ROUND(SUM(t.planned_h) * 1.00, 2) AS thr_red,\r\n\r\n  /* infos complémentaires */\r\n  ROUND(GREATEST(SUM(t.planned_h) - SUM(t.worked_h), 0), 2) AS remaining_h,\r\n  ROUND(GREATEST(SUM(t.worked_h) - SUM(t.planned_h), 0), 2) AS delay_h,\r\n  ROUND(SUM(t.worked_h) - SUM(t.planned_h), 2) AS delta_h\r\n\r\nFROM (\r\n  SELECT\r\n    s.DepartmentNum,\r\n    s.WorkCenterNum,\r\n    s.OrderNum,\r\n    s.OperationDescription,\r\n\r\n    SUM(COALESCE(s.TotalLaborRunHours_Actual, 0)) AS worked_h,\r\n    MAX(COALESCE(s.PlannedRunHours, 0))           AS planned_h\r\n\r\n  FROM ShopActivityHistorical s\r\n  WHERE s.DepartmentNum = '${dept}'\r\n    AND s.WorkCenterNum = '${wc}'\r\n    AND s.OrderNum = '${of}'\r\n    AND ('${Operation}' = 'ALL' OR s.OrderStepSequenceNum = '${Operation}')\r\n  GROUP BY\r\n    s.DepartmentNum,\r\n    s.WorkCenterNum,\r\n    s.OrderNum,\r\n    s.OperationDescription\r\n) t;",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Jauge temps de travail",
+      "transformations": [
+        {
+          "id": "configFromData",
+          "options": {
+            "configRefId": "A",
+            "mappings": [
+              {
+                "fieldName": "gauge_max_h",
+                "handlerKey": "max"
+              },
+              {
+                "fieldName": "thr_orange",
+                "handlerArguments": {
+                  "threshold": {
+                    "color": "orange"
+                  }
+                },
+                "handlerKey": "threshold1"
+              },
+              {
+                "fieldName": "thr_red",
+                "handlerKey": "threshold1"
+              }
+            ]
+          }
+        }
+      ],
+      "transparent": true,
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "afe8h06ue0xkwb"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "fieldMinMax": false,
+          "mappings": [
+            {
+              "options": {
+                "0>": {
+                  "color": "green",
+                  "index": 0
+                }
+              },
+              "type": "value"
+            }
+          ],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "h"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 3,
+        "x": 1,
+        "y": 11
+      },
+      "id": 8,
+      "options": {
+        "colorMode": "none",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/^remaining_h$/",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "dataset": "kpi_db",
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  ROUND(SUM(t.worked_h), 2) AS worked_h,\r\n  ROUND(SUM(t.planned_h), 2) AS planned_h,\r\n\r\n  /* max de gauge = planned (fixe) */\r\n  ROUND(SUM(t.planned_h), 2) AS gauge_max_h,\r\n\r\n  /* seuils dynamiques basés sur planned */\r\n  ROUND(SUM(t.planned_h) * 0.90, 2) AS thr_orange,\r\n  ROUND(SUM(t.planned_h), 2) AS thr_red,\r\n\r\n  /* infos complémentaires */\r\n  ROUND(GREATEST(SUM(t.planned_h) - SUM(t.worked_h), 0), 2) AS remaining_h,\r\n  ROUND(GREATEST(SUM(t.worked_h) - SUM(t.planned_h), 0), 2) AS delay_h,\r\n  ROUND(SUM(t.worked_h) - SUM(t.planned_h), 2) AS delta_h\r\nFROM (\r\n  SELECT\r\n    s.DepartmentNum,\r\n    s.WorkCenterNum,\r\n    s.OrderNum,\r\n    s.OperationDescription,\r\n    SUM(COALESCE(s.TotalLaborRunHours_Actual, 0)) AS worked_h,\r\n    MAX(COALESCE(s.PlannedRunHours, 0)) AS planned_h\r\n  FROM ShopActivityHistorical s\r\n  WHERE s.DepartmentNum = '${dept}'\r\n    AND s.WorkCenterNum = '${wc}'\r\n    AND s.OrderNum = '${of}'\r\n  GROUP BY\r\n    s.DepartmentNum,\r\n    s.WorkCenterNum,\r\n    s.OrderNum,\r\n    s.OperationDescription\r\n) t;",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Temps restant",
+      "transformations": [
+        {
+          "id": "configFromData",
+          "options": {
+            "configRefId": "A",
+            "mappings": [
+              {
+                "fieldName": "gauge_max_h",
+                "handlerKey": "max"
+              },
+              {
+                "fieldName": "thr_orange",
+                "handlerArguments": {
+                  "threshold": {
+                    "color": "orange"
+                  }
+                },
+                "handlerKey": "threshold1"
+              },
+              {
+                "fieldName": "thr_red",
+                "handlerKey": "threshold1"
+              }
+            ]
+          }
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "afe8h06ue0xkwb"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "fieldMinMax": false,
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              },
+              {
+                "color": "red",
+                "value": 0.01
+              }
+            ]
+          },
+          "unit": "h"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 3,
+        "x": 4,
+        "y": 11
+      },
+      "id": 15,
+      "options": {
+        "colorMode": "none",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/^delay_h$/",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "dataset": "kpi_db",
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  ROUND(SUM(t.worked_h), 2) AS worked_h,\r\n  ROUND(SUM(t.planned_h), 2) AS planned_h,\r\n\r\n  /* max de gauge = planned (fixe) */\r\n  ROUND(SUM(t.planned_h), 2) AS gauge_max_h,\r\n\r\n  /* seuils dynamiques basés sur planned */\r\n  ROUND(SUM(t.planned_h) * 0.90, 2) AS thr_orange,\r\n  ROUND(SUM(t.planned_h), 2) AS thr_red,\r\n\r\n  /* infos complémentaires */\r\n  ROUND(GREATEST(SUM(t.planned_h) - SUM(t.worked_h), 0), 2) AS remaining_h,\r\n  ROUND(GREATEST(SUM(t.worked_h) - SUM(t.planned_h), 0), 2) AS delay_h,\r\n  ROUND(SUM(t.worked_h) - SUM(t.planned_h), 2) AS delta_h\r\nFROM (\r\n  SELECT\r\n    s.DepartmentNum,\r\n    s.WorkCenterNum,\r\n    s.OrderNum,\r\n    s.OperationDescription,\r\n    SUM(COALESCE(s.TotalLaborRunHours_Actual, 0)) AS worked_h,\r\n    MAX(COALESCE(s.PlannedRunHours, 0)) AS planned_h\r\n  FROM ShopActivityHistorical s\r\n  WHERE s.DepartmentNum = '${dept}'\r\n    AND s.WorkCenterNum = '${wc}'\r\n    AND s.OrderNum = '${of}'\r\n  GROUP BY\r\n    s.DepartmentNum,\r\n    s.WorkCenterNum,\r\n    s.OrderNum,\r\n    s.OperationDescription\r\n) t;",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Retard ",
+      "transformations": [
+        {
+          "id": "configFromData",
+          "options": {
+            "configRefId": "A",
+            "mappings": [
+              {
+                "fieldName": "gauge_max_h",
+                "handlerKey": "max"
+              },
+              {
+                "fieldName": "thr_orange",
+                "handlerArguments": {
+                  "threshold": {
+                    "color": "orange"
+                  }
+                },
+                "handlerKey": "threshold1"
+              },
+              {
+                "fieldName": "thr_red",
+                "handlerKey": "threshold1"
+              }
+            ]
+          }
+        }
+      ],
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "afe8h06ue0xkwb"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "fieldMinMax": false,
+          "mappings": [],
+          "min": 0,
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": 0
+              }
+            ]
+          },
+          "unit": "h"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 3,
+        "w": 3,
+        "x": 7,
+        "y": 11
+      },
+      "id": 6,
+      "options": {
+        "colorMode": "none",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "percentChangeColorMode": "standard",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "/^planned_h$/",
+          "values": false
+        },
+        "showPercentChange": false,
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "12.3.2",
+      "targets": [
+        {
+          "dataset": "kpi_db",
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT\r\n  ROUND(SUM(t.worked_h), 2) AS worked_h,\r\n  ROUND(SUM(t.planned_h), 2) AS planned_h,\r\n\r\n  /* max de gauge = planned (fixe) */\r\n  ROUND(SUM(t.planned_h), 2) AS gauge_max_h,\r\n\r\n  /* seuils dynamiques basés sur planned */\r\n  ROUND(SUM(t.planned_h) * 0.90, 2) AS thr_orange,\r\n  ROUND(SUM(t.planned_h), 2) AS thr_red,\r\n\r\n  /* infos complémentaires */\r\n  ROUND(GREATEST(SUM(t.planned_h) - SUM(t.worked_h), 0), 2) AS remaining_h,\r\n  ROUND(GREATEST(SUM(t.worked_h) - SUM(t.planned_h), 0), 2) AS delay_h,\r\n  ROUND(SUM(t.worked_h) - SUM(t.planned_h), 2) AS delta_h\r\nFROM (\r\n  SELECT\r\n    s.DepartmentNum,\r\n    s.WorkCenterNum,\r\n    s.OrderNum,\r\n    s.OperationDescription,\r\n    SUM(COALESCE(s.TotalLaborRunHours_Actual, 0)) AS worked_h,\r\n    MAX(COALESCE(s.PlannedRunHours, 0)) AS planned_h\r\n  FROM ShopActivityHistorical s\r\n  WHERE s.DepartmentNum = '${dept}'\r\n    AND s.WorkCenterNum = '${wc}'\r\n    AND s.OrderNum = '${of}'\r\n  GROUP BY\r\n    s.DepartmentNum,\r\n    s.WorkCenterNum,\r\n    s.OrderNum,\r\n    s.OperationDescription\r\n) t;",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Temps prévu",
+      "transformations": [
+        {
+          "id": "configFromData",
+          "options": {
+            "configRefId": "A",
+            "mappings": [
+              {
+                "fieldName": "gauge_max_h",
+                "handlerKey": "max"
+              },
+              {
+                "fieldName": "thr_orange",
+                "handlerArguments": {
+                  "threshold": {
+                    "color": "orange"
+                  }
+                },
+                "handlerKey": "threshold1"
+              },
+              {
+                "fieldName": "thr_red",
+                "handlerKey": "threshold1"
+              }
+            ]
+          }
+        }
+      ],
+      "type": "stat"
+    }
+  ],
+  "preload": false,
+  "schemaVersion": 42,
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "text": "810500",
+          "value": "810500"
+        },
+        "definition": "SELECT DISTINCT DepartmentNum AS __value, DepartmentNum AS __text\nFROM ShopActivityHistorical\nWHERE DepartmentNum IS NOT NULL\nORDER BY DepartmentNum;",
+        "name": "dept",
+        "options": [],
+        "query": "SELECT DISTINCT DepartmentNum AS __value, DepartmentNum AS __text\nFROM ShopActivityHistorical\nWHERE DepartmentNum IS NOT NULL\nORDER BY DepartmentNum;",
+        "refresh": 1,
+        "regex": "",
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "ST20A",
+          "value": "ST20A"
+        },
+        "definition": "SELECT DISTINCT WorkCenterNum AS __value, WorkCenterNum AS __text\nFROM ShopActivityHistorical\nWHERE DepartmentNum = '${dept}'\n  AND WorkCenterNum IS NOT NULL\nORDER BY WorkCenterNum;",
+        "name": "wc",
+        "options": [],
+        "query": "SELECT DISTINCT WorkCenterNum AS __value, WorkCenterNum AS __text\nFROM ShopActivityHistorical\nWHERE DepartmentNum = '${dept}'\n  AND WorkCenterNum IS NOT NULL\nORDER BY WorkCenterNum;",
+        "refresh": 1,
+        "regex": "",
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "60100317750",
+          "value": "60100317750"
+        },
+        "definition": "SELECT DISTINCT OrderNum AS __value, OrderNum AS __text\nFROM ShopActivityHistorical\nWHERE DepartmentNum = '${dept}'\n  AND WorkCenterNum = '${wc}'\n  AND OrderNum IS NOT NULL\nORDER BY OrderNum;",
+        "name": "of",
+        "options": [],
+        "query": "SELECT DISTINCT OrderNum AS __value, OrderNum AS __text\nFROM ShopActivityHistorical\nWHERE DepartmentNum = '${dept}'\n  AND WorkCenterNum = '${wc}'\n  AND OrderNum IS NOT NULL\nORDER BY OrderNum;",
+        "refresh": 1,
+        "regex": "",
+        "type": "query"
+      },
+      {
+        "current": {
+          "text": "Op 300",
+          "value": "300"
+        },
+        "definition": "SELECT * FROM (\n  SELECT 'ALL' AS __value, 'Toutes opérations' AS __text\n  UNION ALL\n  SELECT DISTINCT\n    CAST(OrderStepSequenceNum AS CHAR) AS __value,\n    CONCAT('Op ', OrderStepSequenceNum) AS __text\n  FROM ShopActivityHistorical\n  WHERE DepartmentNum='${dept}'\n    AND WorkCenterNum='${wc}'\n    AND OrderNum='${of}'\n) x\nORDER BY CASE WHEN __value='ALL' THEN 0 ELSE 1 END, __text;",
+        "label": "Operation",
+        "name": "Operation",
+        "options": [],
+        "query": "SELECT * FROM (\n  SELECT 'ALL' AS __value, 'Toutes opérations' AS __text\n  UNION ALL\n  SELECT DISTINCT\n    CAST(OrderStepSequenceNum AS CHAR) AS __value,\n    CONCAT('Op ', OrderStepSequenceNum) AS __text\n  FROM ShopActivityHistorical\n  WHERE DepartmentNum='${dept}'\n    AND WorkCenterNum='${wc}'\n    AND OrderNum='${of}'\n) x\nORDER BY CASE WHEN __value='ALL' THEN 0 ELSE 1 END, __text;",
+        "refresh": 1,
+        "regex": "",
+        "type": "query"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-6h",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "Dashboard station temp réel ",
+  "uid": "adnzmlj",
+  "version": 24
+}
