@@ -1,0 +1,1725 @@
+{
+    "annotations": {
+      "list": [
+        {
+          "builtIn": 1,
+          "datasource": {
+            "type": "grafana",
+            "uid": "-- Grafana --"
+          },
+          "enable": true,
+          "hide": true,
+          "iconColor": "rgba(0, 211, 255, 1)",
+          "name": "Annotations & Alerts",
+          "type": "dashboard"
+        }
+      ]
+    },
+    "editable": true,
+    "fiscalYearStartMonth": 0,
+    "graphTooltip": 0,
+    "id": 0,
+    "links": [],
+    "panels": [
+      {
+        "datasource": {
+          "type": "mysql",
+          "uid": "aff3633u5xtdsd"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "blue",
+                  "value": 0
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 6,
+          "w": 8,
+          "x": 0,
+          "y": 0
+        },
+        "id": 1002,
+        "options": {
+          "colorMode": "value",
+          "graphMode": "area",
+          "justifyMode": "auto",
+          "orientation": "auto",
+          "percentChangeColorMode": "standard",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showPercentChange": false,
+          "textMode": "auto",
+          "wideLayout": true
+        },
+        "pluginVersion": "12.3.1",
+        "targets": [
+          {
+            "dataset": "kpi_db",
+            "editorMode": "code",
+            "format": "table",
+            "rawQuery": true,
+            "rawSql": "SELECT COUNT(*) AS Total_OF\nFROM (\n    SELECT CAST(REPLACE(unpivoted.OF_Num, '.0', '') AS UNSIGNED) AS OF_Nettoye,\n    CASE \n        WHEN MAX(CASE WHEN o.Status IN ('Complete', 'Completed', 'C', 'F') OR o.QtyGood > 0 THEN o.OrderStepSequenceNum ELSE 0 END) = 990 THEN 'TERMINÉ'\n        WHEN SUM(CASE \n            WHEN (o.Status IN ('Complete', 'Completed', 'C', 'F') OR o.QtyGood > 0) AND o.LastActivityTime IS NOT NULL THEN CASE WHEN TIMESTAMPDIFF(MINUTE, STR_TO_DATE(CONCAT('2026/', unpivoted.Fin), '%Y/%d/%m %H:%i'), o.LastActivityTime) > 0 THEN 1 ELSE 0 END\n            WHEN o.FirstActivityTime IS NOT NULL AND o.FirstActivityTime != '' THEN CASE WHEN GREATEST(TIMESTAMPDIFF(MINUTE, STR_TO_DATE(CONCAT('2026/', unpivoted.Debut), '%Y/%d/%m %H:%i'), o.FirstActivityTime), TIMESTAMPDIFF(MINUTE, STR_TO_DATE(CONCAT('2026/', unpivoted.Fin), '%Y/%d/%m %H:%i'), STR_TO_DATE('${date_ref}', '%Y-%m-%d %H:%i:%s'))) > 0 THEN 1 ELSE 0 END\n            ELSE CASE WHEN TIMESTAMPDIFF(MINUTE, STR_TO_DATE(CONCAT('2026/', unpivoted.Debut), '%Y/%d/%m %H:%i'), STR_TO_DATE('${date_ref}', '%Y-%m-%d %H:%i:%s')) > 0 THEN 1 ELSE 0 END\n        END) > 0 THEN 'EN RETARD'\n        WHEN MAX(CASE WHEN o.FirstActivityTime IS NOT NULL AND o.FirstActivityTime != '' THEN o.OrderStepSequenceNum ELSE 0 END) > 0 THEN 'EN COURS'\n        ELSE 'PLANIFIÉ'\n    END AS Statut_Global\n    FROM (\n        SELECT `100` AS OF_Num, `Heure Début` AS Debut, `Heure Fin` AS Fin, 100 AS Op FROM planning_${ligne}_grafana WHERE `100` != 'Libre' AND `100` IS NOT NULL AND `100` != '' UNION ALL\n        SELECT `200` AS OF_Num, `Heure Début`, `Heure Fin`, 200 FROM planning_${ligne}_grafana WHERE `200` != 'Libre' AND `200` IS NOT NULL AND `200` != '' UNION ALL\n        SELECT `300` AS OF_Num, `Heure Début`, `Heure Fin`, 300 FROM planning_${ligne}_grafana WHERE `300` != 'Libre' AND `300` IS NOT NULL AND `300` != '' UNION ALL\n        SELECT `350` AS OF_Num, `Heure Début`, `Heure Fin`, 350 FROM planning_${ligne}_grafana WHERE `350` != 'Libre' AND `350` IS NOT NULL AND `350` != '' UNION ALL\n        SELECT `400` AS OF_Num, `Heure Début`, `Heure Fin`, 400 FROM planning_${ligne}_grafana WHERE `400` != 'Libre' AND `400` IS NOT NULL AND `400` != '' UNION ALL\n        SELECT `900` AS OF_Num, `Heure Début`, `Heure Fin`, 900 FROM planning_${ligne}_grafana WHERE `900` != 'Libre' AND `900` IS NOT NULL AND `900` != '' UNION ALL\n        SELECT `990` AS OF_Num, `Heure Début`, `Heure Fin`, 990 FROM planning_${ligne}_grafana WHERE `990` != 'Libre' AND `990` IS NOT NULL AND `990` != ''\n    ) unpivoted\n    LEFT JOIN orderoperation o ON CAST(REPLACE(unpivoted.OF_Num, '.0', '') AS UNSIGNED) = CAST(o.OrderNum AS UNSIGNED) AND unpivoted.Op = o.OrderStepSequenceNum\n    GROUP BY OF_Nettoye\n) t;",
+            "refId": "A",
+            "sql": {
+              "columns": [
+                {
+                  "parameters": [],
+                  "type": "function"
+                }
+              ],
+              "groupBy": [
+                {
+                  "property": {
+                    "type": "string"
+                  },
+                  "type": "groupBy"
+                }
+              ],
+              "limit": 50
+            }
+          }
+        ],
+        "title": "Nombre d'OF pour la ligne (${ligne})",
+        "type": "stat"
+      },
+      {
+        "datasource": {
+          "type": "mysql",
+          "uid": "aff3633u5xtdsd"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "percentage",
+              "steps": [
+                {
+                  "color": "semi-dark-red",
+                  "value": 0
+                },
+                {
+                  "color": "dark-red",
+                  "value": 50
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 6,
+          "w": 8,
+          "x": 8,
+          "y": 0
+        },
+        "id": 1003,
+        "options": {
+          "colorMode": "value",
+          "graphMode": "area",
+          "justifyMode": "auto",
+          "orientation": "auto",
+          "percentChangeColorMode": "standard",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showPercentChange": false,
+          "textMode": "auto",
+          "wideLayout": true
+        },
+        "pluginVersion": "12.3.1",
+        "targets": [
+          {
+            "dataset": "kpi_db",
+            "editorMode": "code",
+            "format": "table",
+            "rawQuery": true,
+            "rawSql": "SELECT SUM(CASE WHEN Statut_Global = 'EN RETARD' THEN 1 ELSE 0 END) AS OF_En_Retard\nFROM (\n    SELECT \n        CAST(REPLACE(unpivoted.OF_Num, '.0', '') AS UNSIGNED) AS OF_Nettoye,\n        CASE \n            -- 1. Si la dernière opération (990) est terminée -> TERMINÉ\n            WHEN MAX(CASE WHEN o.Status IN ('Complete', 'Completed', 'C', 'F') OR o.QtyGood > 0 THEN o.OrderStepSequenceNum ELSE 0 END) = 990 THEN 'TERMINÉ'\n            \n            -- 2. On calcule le retard total global (identique à ton tableau principal) et on vérifie s'il est > 0\n            WHEN SUM(\n              CASE \n                WHEN (o.Status IN ('Complete', 'Completed', 'C', 'F') OR o.QtyGood > 0) AND o.LastActivityTime IS NOT NULL THEN \n                  ROUND(TIMESTAMPDIFF(MINUTE, STR_TO_DATE(CONCAT('2026/', unpivoted.Fin), '%Y/%d/%m %H:%i'), o.LastActivityTime) / 60.0, 1)\n                WHEN o.FirstActivityTime IS NOT NULL AND o.FirstActivityTime != '' THEN \n                  ROUND(GREATEST(\n                    TIMESTAMPDIFF(MINUTE, STR_TO_DATE(CONCAT('2026/', unpivoted.Debut), '%Y/%d/%m %H:%i'), o.FirstActivityTime),\n                    TIMESTAMPDIFF(MINUTE, STR_TO_DATE(CONCAT('2026/', unpivoted.Fin), '%Y/%d/%m %H:%i'), STR_TO_DATE('${date_ref}', '%Y-%m-%d %H:%i:%s'))\n                  ) / 60.0, 1)\n                ELSE \n                  ROUND(GREATEST(0, TIMESTAMPDIFF(MINUTE, STR_TO_DATE(CONCAT('2026/', unpivoted.Debut), '%Y/%d/%m %H:%i'), STR_TO_DATE('${date_ref}', '%Y-%m-%d %H:%i:%s'))) / 60.0, 1)\n              END\n            ) > 0 THEN 'EN RETARD'\n\n            -- 3. Si ça a commencé mais pas de retard > 0\n            WHEN MAX(CASE WHEN o.FirstActivityTime IS NOT NULL AND o.FirstActivityTime != '' THEN o.OrderStepSequenceNum ELSE 0 END) > 0 THEN 'EN COURS'\n            \n            -- 4. Sinon\n            ELSE 'PLANIFIÉ'\n        END AS Statut_Global\n\n    FROM (\n        SELECT `100` AS OF_Num, `Heure Début` AS Debut, `Heure Fin` AS Fin, 100 AS Op FROM planning_${ligne}_grafana WHERE `100` != 'Libre' AND `100` IS NOT NULL AND `100` != '' UNION ALL\n        SELECT `200` AS OF_Num, `Heure Début`, `Heure Fin`, 200 FROM planning_${ligne}_grafana WHERE `200` != 'Libre' AND `200` IS NOT NULL AND `200` != '' UNION ALL\n        SELECT `300` AS OF_Num, `Heure Début`, `Heure Fin`, 300 FROM planning_${ligne}_grafana WHERE `300` != 'Libre' AND `300` IS NOT NULL AND `300` != '' UNION ALL\n        SELECT `350` AS OF_Num, `Heure Début`, `Heure Fin`, 350 FROM planning_${ligne}_grafana WHERE `350` != 'Libre' AND `350` IS NOT NULL AND `350` != '' UNION ALL\n        SELECT `400` AS OF_Num, `Heure Début`, `Heure Fin`, 400 FROM planning_${ligne}_grafana WHERE `400` != 'Libre' AND `400` IS NOT NULL AND `400` != '' UNION ALL\n        SELECT `900` AS OF_Num, `Heure Début`, `Heure Fin`, 900 FROM planning_${ligne}_grafana WHERE `900` != 'Libre' AND `900` IS NOT NULL AND `900` != '' UNION ALL\n        SELECT `990` AS OF_Num, `Heure Début`, `Heure Fin`, 990 FROM planning_${ligne}_grafana WHERE `990` != 'Libre' AND `990` IS NOT NULL AND `990` != ''\n    ) unpivoted\n    LEFT JOIN orderoperation o ON CAST(REPLACE(unpivoted.OF_Num, '.0', '') AS UNSIGNED) = CAST(o.OrderNum AS UNSIGNED) AND unpivoted.Op = o.OrderStepSequenceNum\n    GROUP BY OF_Nettoye\n) t;",
+            "refId": "A",
+            "sql": {
+              "columns": [
+                {
+                  "parameters": [],
+                  "type": "function"
+                }
+              ],
+              "groupBy": [
+                {
+                  "property": {
+                    "type": "string"
+                  },
+                  "type": "groupBy"
+                }
+              ],
+              "limit": 50
+            }
+          }
+        ],
+        "title": "OF en retard sur la ligne (${ligne})",
+        "type": "stat"
+      },
+      {
+        "datasource": {
+          "type": "mysql",
+          "uid": "aff3633u5xtdsd"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "color": {
+              "mode": "thresholds"
+            },
+            "mappings": [],
+            "thresholds": {
+              "mode": "percentage",
+              "steps": [
+                {
+                  "color": "semi-dark-green",
+                  "value": 0
+                },
+                {
+                  "color": "semi-dark-green",
+                  "value": 90
+                }
+              ]
+            }
+          },
+          "overrides": []
+        },
+        "gridPos": {
+          "h": 6,
+          "w": 8,
+          "x": 16,
+          "y": 0
+        },
+        "id": 1004,
+        "options": {
+          "colorMode": "value",
+          "graphMode": "area",
+          "justifyMode": "auto",
+          "orientation": "auto",
+          "percentChangeColorMode": "standard",
+          "reduceOptions": {
+            "calcs": [
+              "lastNotNull"
+            ],
+            "fields": "",
+            "values": false
+          },
+          "showPercentChange": false,
+          "textMode": "auto",
+          "wideLayout": true
+        },
+        "pluginVersion": "12.3.1",
+        "targets": [
+          {
+            "dataset": "kpi_db",
+            "editorMode": "code",
+            "format": "table",
+            "rawQuery": true,
+            "rawSql": "SELECT SUM(CASE WHEN Statut_Global = 'TERMINÉ' THEN 1 ELSE 0 END) AS OF_Termines\nFROM (\n    SELECT CAST(REPLACE(unpivoted.OF_Num, '.0', '') AS UNSIGNED) AS OF_Nettoye,\n    CASE \n        WHEN MAX(CASE WHEN o.Status IN ('Complete', 'Completed', 'C', 'F') OR o.QtyGood > 0 THEN o.OrderStepSequenceNum ELSE 0 END) = 990 THEN 'TERMINÉ'\n        WHEN SUM(CASE \n            WHEN (o.Status IN ('Complete', 'Completed', 'C', 'F') OR o.QtyGood > 0) AND o.LastActivityTime IS NOT NULL THEN CASE WHEN TIMESTAMPDIFF(MINUTE, STR_TO_DATE(CONCAT('2026/', unpivoted.Fin), '%Y/%d/%m %H:%i'), o.LastActivityTime) > 0 THEN 1 ELSE 0 END\n            WHEN o.FirstActivityTime IS NOT NULL AND o.FirstActivityTime != '' THEN CASE WHEN GREATEST(TIMESTAMPDIFF(MINUTE, STR_TO_DATE(CONCAT('2026/', unpivoted.Debut), '%Y/%d/%m %H:%i'), o.FirstActivityTime), TIMESTAMPDIFF(MINUTE, STR_TO_DATE(CONCAT('2026/', unpivoted.Fin), '%Y/%d/%m %H:%i'), STR_TO_DATE('${date_ref}', '%Y-%m-%d %H:%i:%s'))) > 0 THEN 1 ELSE 0 END\n            ELSE CASE WHEN TIMESTAMPDIFF(MINUTE, STR_TO_DATE(CONCAT('2026/', unpivoted.Debut), '%Y/%d/%m %H:%i'), STR_TO_DATE('${date_ref}', '%Y-%m-%d %H:%i:%s')) > 0 THEN 1 ELSE 0 END\n        END) > 0 THEN 'EN RETARD'\n        WHEN MAX(CASE WHEN o.FirstActivityTime IS NOT NULL AND o.FirstActivityTime != '' THEN o.OrderStepSequenceNum ELSE 0 END) > 0 THEN 'EN COURS'\n        ELSE 'PLANIFIÉ'\n    END AS Statut_Global\n    FROM (\n        SELECT `100` AS OF_Num, `Heure Début` AS Debut, `Heure Fin` AS Fin, 100 AS Op FROM planning_${ligne}_grafana WHERE `100` != 'Libre' AND `100` IS NOT NULL AND `100` != '' UNION ALL\n        SELECT `200` AS OF_Num, `Heure Début`, `Heure Fin`, 200 FROM planning_${ligne}_grafana WHERE `200` != 'Libre' AND `200` IS NOT NULL AND `200` != '' UNION ALL\n        SELECT `300` AS OF_Num, `Heure Début`, `Heure Fin`, 300 FROM planning_${ligne}_grafana WHERE `300` != 'Libre' AND `300` IS NOT NULL AND `300` != '' UNION ALL\n        SELECT `350` AS OF_Num, `Heure Début`, `Heure Fin`, 350 FROM planning_${ligne}_grafana WHERE `350` != 'Libre' AND `350` IS NOT NULL AND `350` != '' UNION ALL\n        SELECT `400` AS OF_Num, `Heure Début`, `Heure Fin`, 400 FROM planning_${ligne}_grafana WHERE `400` != 'Libre' AND `400` IS NOT NULL AND `400` != '' UNION ALL\n        SELECT `900` AS OF_Num, `Heure Début`, `Heure Fin`, 900 FROM planning_${ligne}_grafana WHERE `900` != 'Libre' AND `900` IS NOT NULL AND `900` != '' UNION ALL\n        SELECT `990` AS OF_Num, `Heure Début`, `Heure Fin`, 990 FROM planning_${ligne}_grafana WHERE `990` != 'Libre' AND `990` IS NOT NULL AND `990` != ''\n    ) unpivoted\n    LEFT JOIN orderoperation o ON CAST(REPLACE(unpivoted.OF_Num, '.0', '') AS UNSIGNED) = CAST(o.OrderNum AS UNSIGNED) AND unpivoted.Op = o.OrderStepSequenceNum\n    GROUP BY OF_Nettoye\n) t;",
+            "refId": "A",
+            "sql": {
+              "columns": [
+                {
+                  "parameters": [],
+                  "type": "function"
+                }
+              ],
+              "groupBy": [
+                {
+                  "property": {
+                    "type": "string"
+                  },
+                  "type": "groupBy"
+                }
+              ],
+              "limit": 50
+            }
+          }
+        ],
+        "title": "OF terminés sur la ligne (${ligne})",
+        "type": "stat"
+      },
+      {
+        "collapsed": false,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 6
+        },
+        "id": 999,
+        "panels": [],
+        "title": "📋 BILAN GLOBAL DE LA LIGNE (${ligne})",
+        "type": "row"
+      },
+      {
+        "datasource": {
+          "uid": "${datasource}"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "custom": {
+              "align": "center",
+              "cellOptions": {
+                "type": "auto"
+              },
+              "footer": {
+                "reducers": []
+              },
+              "inspect": false
+            },
+            "mappings": [
+              {
+                "options": {
+                  "match": "null",
+                  "result": {
+                    "color": "blue",
+                    "text": "Non commencé"
+                  }
+                },
+                "type": "special"
+              },
+              {
+                "options": {
+                  "match": "empty",
+                  "result": {
+                    "color": "blue",
+                    "text": "Non commencé"
+                  }
+                },
+                "type": "special"
+              }
+            ],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": 0
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Statut_Global"
+              },
+              "properties": [
+                {
+                  "id": "mappings",
+                  "value": [
+                    {
+                      "options": {
+                        "EN COURS": {
+                          "color": "orange",
+                          "index": 2
+                        },
+                        "EN RETARD": {
+                          "color": "red",
+                          "index": 0
+                        },
+                        "PLANIFIÉ": {
+                          "color": "blue",
+                          "index": 3
+                        },
+                        "TERMINÉ": {
+                          "color": "green",
+                          "index": 1
+                        }
+                      },
+                      "type": "value"
+                    }
+                  ]
+                },
+                {
+                  "id": "custom.cellOptions",
+                  "value": {
+                    "type": "color-background"
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Retard_Global_Accumule"
+              },
+              "properties": [
+                {
+                  "id": "thresholds",
+                  "value": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": 0
+                      },
+                      {
+                        "color": "transparent",
+                        "value": -0.01
+                      },
+                      {
+                        "color": "red",
+                        "value": 0.01
+                      }
+                    ]
+                  }
+                },
+                {
+                  "id": "custom.cellOptions",
+                  "value": {
+                    "type": "color-text"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 8,
+          "w": 24,
+          "x": 0,
+          "y": 7
+        },
+        "id": 1000,
+        "options": {
+          "cellHeight": "sm",
+          "showHeader": true,
+          "sortBy": []
+        },
+        "pluginVersion": "12.3.1",
+        "targets": [
+          {
+            "editorMode": "code",
+            "format": "table",
+            "rawQuery": true,
+            "rawSql": "SELECT \n    OF_Nettoye,\n    Derniere_Op_Terminee,\n    Retard_Global_Accumule,\n    -- La logique du statut devient ultra simple et lisible\n    CASE \n        WHEN Derniere_Op_Terminee = 990 THEN 'TERMINÉ'\n        WHEN Retard_Global_Accumule > 0 THEN 'EN RETARD'\n        WHEN Max_Op_Commencee > 0 THEN 'EN COURS'\n        ELSE 'PLANIFIÉ'\n    END AS Statut_Global\nFROM (\n    SELECT \n        CAST(REPLACE(unpivoted.OF_Num, '.0', '') AS UNSIGNED) AS OF_Nettoye,\n        MAX(CASE WHEN o.Status IN ('Complete', 'Completed', 'C', 'F') OR o.QtyGood > 0 THEN o.OrderStepSequenceNum ELSE 0 END) AS Derniere_Op_Terminee,\n        MAX(CASE WHEN o.FirstActivityTime IS NOT NULL AND o.FirstActivityTime != '' THEN o.OrderStepSequenceNum ELSE 0 END) AS Max_Op_Commencee,\n        \n        -- L'ASTUCE EST ICI : On extrait uniquement le calcul de l'opération la plus avancée\n        CAST(SUBSTRING_INDEX(GROUP_CONCAT(\n            CASE \n                WHEN (o.Status IN ('Complete', 'Completed', 'C', 'F') OR o.QtyGood > 0) AND o.LastActivityTime IS NOT NULL THEN \n                    ROUND(TIMESTAMPDIFF(MINUTE, STR_TO_DATE(CONCAT('2026/', unpivoted.Fin), '%Y/%d/%m %H:%i'), o.LastActivityTime) / 60.0, 1)\n                WHEN o.FirstActivityTime IS NOT NULL AND o.FirstActivityTime != '' THEN \n                    ROUND(GREATEST(\n                        TIMESTAMPDIFF(MINUTE, STR_TO_DATE(CONCAT('2026/', unpivoted.Debut), '%Y/%d/%m %H:%i'), o.FirstActivityTime),\n                        TIMESTAMPDIFF(MINUTE, STR_TO_DATE(CONCAT('2026/', unpivoted.Fin), '%Y/%d/%m %H:%i'), STR_TO_DATE('${date_ref}', '%Y-%m-%d %H:%i:%s'))\n                    ) / 60.0, 1)\n                ELSE \n                    ROUND(GREATEST(0, TIMESTAMPDIFF(MINUTE, STR_TO_DATE(CONCAT('2026/', unpivoted.Debut), '%Y/%d/%m %H:%i'), STR_TO_DATE('${date_ref}', '%Y-%m-%d %H:%i:%s'))) / 60.0, 1)\n            END\n            ORDER BY \n                -- On trie pour mettre l'opération en cours la plus élevée en premier (ex: la 300 en premier)\n                -- Si rien n'a commencé, on met l'opération la plus petite en premier (la 100)\n                CASE WHEN o.FirstActivityTime IS NOT NULL AND o.FirstActivityTime != '' THEN o.OrderStepSequenceNum ELSE 0 END DESC, \n                unpivoted.Op ASC\n        ), ',', 1) AS DECIMAL(10,1)) AS Retard_Global_Accumule\n        \n    FROM (\n        SELECT `100` AS OF_Num, `Heure Début` AS Debut, `Heure Fin` AS Fin, 100 AS Op FROM planning_${ligne}_grafana WHERE `100` != 'Libre' AND `100` IS NOT NULL AND `100` != '' UNION ALL\n        SELECT `200` AS OF_Num, `Heure Début`, `Heure Fin`, 200 FROM planning_${ligne}_grafana WHERE `200` != 'Libre' AND `200` IS NOT NULL AND `200` != '' UNION ALL\n        SELECT `300` AS OF_Num, `Heure Début`, `Heure Fin`, 300 FROM planning_${ligne}_grafana WHERE `300` != 'Libre' AND `300` IS NOT NULL AND `300` != '' UNION ALL\n        SELECT `350` AS OF_Num, `Heure Début`, `Heure Fin`, 350 FROM planning_${ligne}_grafana WHERE `350` != 'Libre' AND `350` IS NOT NULL AND `350` != '' UNION ALL\n        SELECT `400` AS OF_Num, `Heure Début`, `Heure Fin`, 400 FROM planning_${ligne}_grafana WHERE `400` != 'Libre' AND `400` IS NOT NULL AND `400` != '' UNION ALL\n        SELECT `900` AS OF_Num, `Heure Début`, `Heure Fin`, 900 FROM planning_${ligne}_grafana WHERE `900` != 'Libre' AND `900` IS NOT NULL AND `900` != '' UNION ALL\n        SELECT `990` AS OF_Num, `Heure Début`, `Heure Fin`, 990 FROM planning_${ligne}_grafana WHERE `990` != 'Libre' AND `990` IS NOT NULL AND `990` != ''\n    ) unpivoted\n    LEFT JOIN orderoperation o ON CAST(REPLACE(unpivoted.OF_Num, '.0', '') AS UNSIGNED) = CAST(o.OrderNum AS UNSIGNED) AND unpivoted.Op = o.OrderStepSequenceNum\n    GROUP BY OF_Nettoye\n) base\nORDER BY \n    CASE WHEN Statut_Global = 'EN RETARD' THEN 1 WHEN Statut_Global = 'EN COURS' THEN 2 ELSE 3 END,\n    Retard_Global_Accumule DESC",
+            "refId": "A",
+            "sql": {
+              "columns": [
+                {
+                  "parameters": [],
+                  "type": "function"
+                }
+              ],
+              "groupBy": [
+                {
+                  "property": {
+                    "type": "string"
+                  },
+                  "type": "groupBy"
+                }
+              ],
+              "limit": 50
+            }
+          }
+        ],
+        "title": "Avancement de tous les OF",
+        "type": "table"
+      },
+      {
+        "collapsed": false,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 15
+        },
+        "id": 1001,
+        "panels": [],
+        "title": "OPERATION 100 (${ligne})",
+        "type": "row"
+      },
+      {
+        "datasource": {
+          "uid": "${datasource}"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "custom": {
+              "align": "center",
+              "cellOptions": {
+                "type": "auto"
+              },
+              "footer": {
+                "reducers": []
+              },
+              "inspect": false
+            },
+            "mappings": [
+              {
+                "options": {
+                  "match": "null",
+                  "result": {
+                    "color": "blue",
+                    "text": "Non commencé"
+                  }
+                },
+                "type": "special"
+              },
+              {
+                "options": {
+                  "match": "empty",
+                  "result": {
+                    "color": "blue",
+                    "text": "Non commencé"
+                  }
+                },
+                "type": "special"
+              }
+            ],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": 0
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Statut"
+              },
+              "properties": [
+                {
+                  "id": "mappings",
+                  "value": [
+                    {
+                      "options": {
+                        "EN COURS": {
+                          "color": "orange",
+                          "index": 3
+                        },
+                        "EN RETARD (DÉMARRAGE)": {
+                          "color": "red",
+                          "index": 0
+                        },
+                        "EN RETARD (NON DÉMARRÉ)": {
+                          "color": "red",
+                          "index": 2
+                        },
+                        "EN RETARD (OP > 7h)": {
+                          "color": "red",
+                          "index": 1
+                        },
+                        "PLANIFIÉ": {
+                          "color": "blue",
+                          "index": 5
+                        },
+                        "TERMINÉ": {
+                          "color": "green",
+                          "index": 4
+                        }
+                      },
+                      "type": "value"
+                    }
+                  ]
+                },
+                {
+                  "id": "custom.cellOptions",
+                  "value": {
+                    "type": "color-background"
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byRegexp",
+                "options": "/Retard.*/"
+              },
+              "properties": [
+                {
+                  "id": "thresholds",
+                  "value": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": 0
+                      },
+                      {
+                        "color": "transparent",
+                        "value": -0.01
+                      },
+                      {
+                        "color": "red",
+                        "value": 0.01
+                      }
+                    ]
+                  }
+                },
+                {
+                  "id": "custom.cellOptions",
+                  "value": {
+                    "type": "color-text"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 6,
+          "w": 24,
+          "x": 0,
+          "y": 16
+        },
+        "id": 2,
+        "options": {
+          "cellHeight": "sm",
+          "showHeader": true
+        },
+        "pluginVersion": "12.3.1",
+        "targets": [
+          {
+            "format": "table",
+            "rawSql": "SELECT \n  CAST(REPLACE(p.`100`, '.0', '') AS UNSIGNED) AS OF_Num,\n  p.`Heure Début` AS Debut_Theo, \n  o.FirstActivityTime AS Debut_Reel,\n  p.`Heure Fin` AS Fin_Theo,\n  o.LastActivityTime AS Fin_Reelle,\n  \n  CASE \n    WHEN (o.Status IN ('Complete', 'Completed', 'C', 'F') OR o.QtyGood > 0) AND o.LastActivityTime IS NOT NULL AND o.FirstActivityTime IS NOT NULL THEN \n      ROUND(TIMESTAMPDIFF(MINUTE, o.FirstActivityTime, o.LastActivityTime) / 60.0 - 7.0, 1)\n    WHEN o.FirstActivityTime IS NOT NULL AND o.FirstActivityTime != '' THEN \n      ROUND(TIMESTAMPDIFF(MINUTE, o.FirstActivityTime, STR_TO_DATE('${date_ref}', '%Y-%m-%d %H:%i:%s')) / 60.0 - 7.0, 1)\n    ELSE 0 \n  END AS Retard_sur_OP,\n  \n  CASE \n    WHEN (o.Status IN ('Complete', 'Completed', 'C', 'F') OR o.QtyGood > 0) AND o.LastActivityTime IS NOT NULL THEN \n      ROUND(TIMESTAMPDIFF(MINUTE, STR_TO_DATE(CONCAT('2026/', p.`Heure Fin`), '%Y/%d/%m %H:%i'), o.LastActivityTime) / 60.0, 1)\n    WHEN o.FirstActivityTime IS NOT NULL AND o.FirstActivityTime != '' THEN \n      ROUND(GREATEST(\n        TIMESTAMPDIFF(MINUTE, STR_TO_DATE(CONCAT('2026/', p.`Heure Début`), '%Y/%d/%m %H:%i'), o.FirstActivityTime),\n        TIMESTAMPDIFF(MINUTE, STR_TO_DATE(CONCAT('2026/', p.`Heure Fin`), '%Y/%d/%m %H:%i'), STR_TO_DATE('${date_ref}', '%Y-%m-%d %H:%i:%s'))\n      ) / 60.0, 1)\n    ELSE \n      ROUND(GREATEST(0, TIMESTAMPDIFF(MINUTE, STR_TO_DATE(CONCAT('2026/', p.`Heure Début`), '%Y/%d/%m %H:%i'), STR_TO_DATE('${date_ref}', '%Y-%m-%d %H:%i:%s'))) / 60.0, 1)\n  END AS Retard_Total,\n  \n  CASE \n    WHEN (o.Status IN ('Complete', 'Completed', 'C', 'F') OR o.QtyGood > 0) THEN \n      'TERMINÉ'\n    WHEN o.FirstActivityTime IS NOT NULL AND o.FirstActivityTime != '' THEN \n      CASE \n        WHEN TIMESTAMPDIFF(MINUTE, o.FirstActivityTime, STR_TO_DATE('${date_ref}', '%Y-%m-%d %H:%i:%s')) > 7*60 THEN 'EN RETARD (OP > 7h)'\n        WHEN TIMESTAMPDIFF(MINUTE, STR_TO_DATE(CONCAT('2026/', p.`Heure Début`), '%Y/%d/%m %H:%i'), o.FirstActivityTime) > 0 THEN 'EN RETARD (DÉMARRAGE)'\n        ELSE 'EN COURS' \n      END\n    ELSE \n      CASE \n        WHEN TIMESTAMPDIFF(MINUTE, STR_TO_DATE(CONCAT('2026/', p.`Heure Début`), '%Y/%d/%m %H:%i'), STR_TO_DATE('${date_ref}', '%Y-%m-%d %H:%i:%s')) > 0 THEN 'EN RETARD (NON DÉMARRÉ)'\n        ELSE 'PLANIFIÉ' \n      END\n  END AS Statut\n  \nFROM planning_${ligne}_grafana p\nLEFT JOIN orderoperation o ON CAST(REPLACE(p.`100`, '.0', '') AS UNSIGNED) = CAST(o.OrderNum AS UNSIGNED) AND o.OrderStepSequenceNum = 100\nWHERE p.`100` != 'Libre' AND p.`100` IS NOT NULL AND p.`100` != ''",
+            "refId": "A"
+          }
+        ],
+        "title": "Détails des OF - Opération 100",
+        "type": "table"
+      },
+      {
+        "collapsed": false,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 22
+        },
+        "id": 10,
+        "panels": [],
+        "title": "OPERATION 200 (${ligne})",
+        "type": "row"
+      },
+      {
+        "datasource": {
+          "uid": "${datasource}"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "custom": {
+              "align": "center",
+              "cellOptions": {
+                "type": "auto"
+              },
+              "footer": {
+                "reducers": []
+              },
+              "inspect": false
+            },
+            "mappings": [
+              {
+                "options": {
+                  "match": "null",
+                  "result": {
+                    "color": "blue",
+                    "text": "Non commencé"
+                  }
+                },
+                "type": "special"
+              },
+              {
+                "options": {
+                  "match": "empty",
+                  "result": {
+                    "color": "blue",
+                    "text": "Non commencé"
+                  }
+                },
+                "type": "special"
+              }
+            ],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": 0
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Statut"
+              },
+              "properties": [
+                {
+                  "id": "mappings",
+                  "value": [
+                    {
+                      "options": {
+                        "EN COURS": {
+                          "color": "orange",
+                          "index": 3
+                        },
+                        "EN RETARD (DÉMARRAGE)": {
+                          "color": "red",
+                          "index": 0
+                        },
+                        "EN RETARD (NON DÉMARRÉ)": {
+                          "color": "red",
+                          "index": 2
+                        },
+                        "EN RETARD (OP > 7h)": {
+                          "color": "red",
+                          "index": 1
+                        },
+                        "PLANIFIÉ": {
+                          "color": "blue",
+                          "index": 5
+                        },
+                        "TERMINÉ": {
+                          "color": "green",
+                          "index": 4
+                        }
+                      },
+                      "type": "value"
+                    }
+                  ]
+                },
+                {
+                  "id": "custom.cellOptions",
+                  "value": {
+                    "type": "color-background"
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byRegexp",
+                "options": "/Retard.*/"
+              },
+              "properties": [
+                {
+                  "id": "thresholds",
+                  "value": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": 0
+                      },
+                      {
+                        "color": "transparent",
+                        "value": -0.01
+                      },
+                      {
+                        "color": "red",
+                        "value": 0.01
+                      }
+                    ]
+                  }
+                },
+                {
+                  "id": "custom.cellOptions",
+                  "value": {
+                    "type": "color-text"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 6,
+          "w": 24,
+          "x": 0,
+          "y": 23
+        },
+        "id": 12,
+        "options": {
+          "cellHeight": "sm",
+          "showHeader": true
+        },
+        "pluginVersion": "12.3.1",
+        "targets": [
+          {
+            "format": "table",
+            "rawSql": "SELECT \n  CAST(REPLACE(p.`200`, '.0', '') AS UNSIGNED) AS OF_Num,\n  p.`Heure Début` AS Debut_Theo, \n  o.FirstActivityTime AS Debut_Reel,\n  p.`Heure Fin` AS Fin_Theo,\n  o.LastActivityTime AS Fin_Reelle,\n  \n  CASE \n    WHEN (o.Status IN ('Complete', 'Completed', 'C', 'F') OR o.QtyGood > 0) AND o.LastActivityTime IS NOT NULL AND o.FirstActivityTime IS NOT NULL THEN \n      ROUND(TIMESTAMPDIFF(MINUTE, o.FirstActivityTime, o.LastActivityTime) / 60.0 - 7.0, 1)\n    WHEN o.FirstActivityTime IS NOT NULL AND o.FirstActivityTime != '' THEN \n      ROUND(TIMESTAMPDIFF(MINUTE, o.FirstActivityTime, STR_TO_DATE('${date_ref}', '%Y-%m-%d %H:%i:%s')) / 60.0 - 7.0, 1)\n    ELSE 0 \n  END AS Retard_sur_OP,\n  \n  CASE \n    WHEN (o.Status IN ('Complete', 'Completed', 'C', 'F') OR o.QtyGood > 0) AND o.LastActivityTime IS NOT NULL THEN \n      ROUND(TIMESTAMPDIFF(MINUTE, STR_TO_DATE(CONCAT('2026/', p.`Heure Fin`), '%Y/%d/%m %H:%i'), o.LastActivityTime) / 60.0, 1)\n    WHEN o.FirstActivityTime IS NOT NULL AND o.FirstActivityTime != '' THEN \n      ROUND(GREATEST(\n        TIMESTAMPDIFF(MINUTE, STR_TO_DATE(CONCAT('2026/', p.`Heure Début`), '%Y/%d/%m %H:%i'), o.FirstActivityTime),\n        TIMESTAMPDIFF(MINUTE, STR_TO_DATE(CONCAT('2026/', p.`Heure Fin`), '%Y/%d/%m %H:%i'), STR_TO_DATE('${date_ref}', '%Y-%m-%d %H:%i:%s'))\n      ) / 60.0, 1)\n    ELSE \n      ROUND(GREATEST(0, TIMESTAMPDIFF(MINUTE, STR_TO_DATE(CONCAT('2026/', p.`Heure Début`), '%Y/%d/%m %H:%i'), STR_TO_DATE('${date_ref}', '%Y-%m-%d %H:%i:%s'))) / 60.0, 1)\n  END AS Retard_Total,\n  \n  CASE \n    WHEN (o.Status IN ('Complete', 'Completed', 'C', 'F') OR o.QtyGood > 0) THEN \n      'TERMINÉ'\n    WHEN o.FirstActivityTime IS NOT NULL AND o.FirstActivityTime != '' THEN \n      CASE \n        WHEN TIMESTAMPDIFF(MINUTE, o.FirstActivityTime, STR_TO_DATE('${date_ref}', '%Y-%m-%d %H:%i:%s')) > 7*60 THEN 'EN RETARD (OP > 7h)'\n        WHEN TIMESTAMPDIFF(MINUTE, STR_TO_DATE(CONCAT('2026/', p.`Heure Début`), '%Y/%d/%m %H:%i'), o.FirstActivityTime) > 0 THEN 'EN RETARD (DÉMARRAGE)'\n        ELSE 'EN COURS' \n      END\n    ELSE \n      CASE \n        WHEN TIMESTAMPDIFF(MINUTE, STR_TO_DATE(CONCAT('2026/', p.`Heure Début`), '%Y/%d/%m %H:%i'), STR_TO_DATE('${date_ref}', '%Y-%m-%d %H:%i:%s')) > 0 THEN 'EN RETARD (NON DÉMARRÉ)'\n        ELSE 'PLANIFIÉ' \n      END\n  END AS Statut\n  \nFROM planning_${ligne}_grafana p\nLEFT JOIN orderoperation o ON CAST(REPLACE(p.`200`, '.0', '') AS UNSIGNED) = CAST(o.OrderNum AS UNSIGNED) AND o.OrderStepSequenceNum = 200\nWHERE p.`200` != 'Libre' AND p.`200` IS NOT NULL AND p.`200` != ''",
+            "refId": "A"
+          }
+        ],
+        "title": "Détails des OF - Opération 200",
+        "type": "table"
+      },
+      {
+        "collapsed": false,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 29
+        },
+        "id": 20,
+        "panels": [],
+        "title": "OPERATION 300 (${ligne})",
+        "type": "row"
+      },
+      {
+        "datasource": {
+          "uid": "${datasource}"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "custom": {
+              "align": "center",
+              "cellOptions": {
+                "type": "auto"
+              },
+              "footer": {
+                "reducers": []
+              },
+              "inspect": false
+            },
+            "mappings": [
+              {
+                "options": {
+                  "match": "null",
+                  "result": {
+                    "color": "blue",
+                    "text": "Non commencé"
+                  }
+                },
+                "type": "special"
+              },
+              {
+                "options": {
+                  "match": "empty",
+                  "result": {
+                    "color": "blue",
+                    "text": "Non commencé"
+                  }
+                },
+                "type": "special"
+              }
+            ],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": 0
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Statut"
+              },
+              "properties": [
+                {
+                  "id": "mappings",
+                  "value": [
+                    {
+                      "options": {
+                        "EN COURS": {
+                          "color": "orange",
+                          "index": 3
+                        },
+                        "EN RETARD (DÉMARRAGE)": {
+                          "color": "red",
+                          "index": 0
+                        },
+                        "EN RETARD (NON DÉMARRÉ)": {
+                          "color": "red",
+                          "index": 2
+                        },
+                        "EN RETARD (OP > 7h)": {
+                          "color": "red",
+                          "index": 1
+                        },
+                        "PLANIFIÉ": {
+                          "color": "blue",
+                          "index": 5
+                        },
+                        "TERMINÉ": {
+                          "color": "green",
+                          "index": 4
+                        }
+                      },
+                      "type": "value"
+                    }
+                  ]
+                },
+                {
+                  "id": "custom.cellOptions",
+                  "value": {
+                    "type": "color-background"
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byRegexp",
+                "options": "/Retard.*/"
+              },
+              "properties": [
+                {
+                  "id": "thresholds",
+                  "value": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": 0
+                      },
+                      {
+                        "color": "transparent",
+                        "value": -0.01
+                      },
+                      {
+                        "color": "red",
+                        "value": 0.01
+                      }
+                    ]
+                  }
+                },
+                {
+                  "id": "custom.cellOptions",
+                  "value": {
+                    "type": "color-text"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 6,
+          "w": 24,
+          "x": 0,
+          "y": 30
+        },
+        "id": 22,
+        "options": {
+          "cellHeight": "sm",
+          "showHeader": true
+        },
+        "pluginVersion": "12.3.1",
+        "targets": [
+          {
+            "format": "table",
+            "rawSql": "SELECT \n  CAST(REPLACE(p.`300`, '.0', '') AS UNSIGNED) AS OF_Num,\n  p.`Heure Début` AS Debut_Theo, \n  o.FirstActivityTime AS Debut_Reel,\n  p.`Heure Fin` AS Fin_Theo,\n  o.LastActivityTime AS Fin_Reelle,\n  \n  CASE \n    WHEN (o.Status IN ('Complete', 'Completed', 'C', 'F') OR o.QtyGood > 0) AND o.LastActivityTime IS NOT NULL AND o.FirstActivityTime IS NOT NULL THEN \n      ROUND(TIMESTAMPDIFF(MINUTE, o.FirstActivityTime, o.LastActivityTime) / 60.0 - 7.0, 1)\n    WHEN o.FirstActivityTime IS NOT NULL AND o.FirstActivityTime != '' THEN \n      ROUND(TIMESTAMPDIFF(MINUTE, o.FirstActivityTime, STR_TO_DATE('${date_ref}', '%Y-%m-%d %H:%i:%s')) / 60.0 - 7.0, 1)\n    ELSE 0 \n  END AS Retard_sur_OP,\n  \n  CASE \n    WHEN (o.Status IN ('Complete', 'Completed', 'C', 'F') OR o.QtyGood > 0) AND o.LastActivityTime IS NOT NULL THEN \n      ROUND(TIMESTAMPDIFF(MINUTE, STR_TO_DATE(CONCAT('2026/', p.`Heure Fin`), '%Y/%d/%m %H:%i'), o.LastActivityTime) / 60.0, 1)\n    WHEN o.FirstActivityTime IS NOT NULL AND o.FirstActivityTime != '' THEN \n      ROUND(GREATEST(\n        TIMESTAMPDIFF(MINUTE, STR_TO_DATE(CONCAT('2026/', p.`Heure Début`), '%Y/%d/%m %H:%i'), o.FirstActivityTime),\n        TIMESTAMPDIFF(MINUTE, STR_TO_DATE(CONCAT('2026/', p.`Heure Fin`), '%Y/%d/%m %H:%i'), STR_TO_DATE('${date_ref}', '%Y-%m-%d %H:%i:%s'))\n      ) / 60.0, 1)\n    ELSE \n      ROUND(GREATEST(0, TIMESTAMPDIFF(MINUTE, STR_TO_DATE(CONCAT('2026/', p.`Heure Début`), '%Y/%d/%m %H:%i'), STR_TO_DATE('${date_ref}', '%Y-%m-%d %H:%i:%s'))) / 60.0, 1)\n  END AS Retard_Total,\n  \n  CASE \n    WHEN (o.Status IN ('Complete', 'Completed', 'C', 'F') OR o.QtyGood > 0) THEN \n      'TERMINÉ'\n    WHEN o.FirstActivityTime IS NOT NULL AND o.FirstActivityTime != '' THEN \n      CASE \n        WHEN TIMESTAMPDIFF(MINUTE, o.FirstActivityTime, STR_TO_DATE('${date_ref}', '%Y-%m-%d %H:%i:%s')) > 7*60 THEN 'EN RETARD (OP > 7h)'\n        WHEN TIMESTAMPDIFF(MINUTE, STR_TO_DATE(CONCAT('2026/', p.`Heure Début`), '%Y/%d/%m %H:%i'), o.FirstActivityTime) > 0 THEN 'EN RETARD (DÉMARRAGE)'\n        ELSE 'EN COURS' \n      END\n    ELSE \n      CASE \n        WHEN TIMESTAMPDIFF(MINUTE, STR_TO_DATE(CONCAT('2026/', p.`Heure Début`), '%Y/%d/%m %H:%i'), STR_TO_DATE('${date_ref}', '%Y-%m-%d %H:%i:%s')) > 0 THEN 'EN RETARD (NON DÉMARRÉ)'\n        ELSE 'PLANIFIÉ' \n      END\n  END AS Statut\n  \nFROM planning_${ligne}_grafana p\nLEFT JOIN orderoperation o ON CAST(REPLACE(p.`300`, '.0', '') AS UNSIGNED) = CAST(o.OrderNum AS UNSIGNED) AND o.OrderStepSequenceNum = 300\nWHERE p.`300` != 'Libre' AND p.`300` IS NOT NULL AND p.`300` != ''",
+            "refId": "A"
+          }
+        ],
+        "title": "Détails des OF - Opération 300",
+        "type": "table"
+      },
+      {
+        "collapsed": false,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 36
+        },
+        "id": 30,
+        "panels": [],
+        "title": "OPERATION 350 (${ligne})",
+        "type": "row"
+      },
+      {
+        "datasource": {
+          "uid": "${datasource}"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "custom": {
+              "align": "center",
+              "cellOptions": {
+                "type": "auto"
+              },
+              "footer": {
+                "reducers": []
+              },
+              "inspect": false
+            },
+            "mappings": [
+              {
+                "options": {
+                  "match": "null",
+                  "result": {
+                    "color": "blue",
+                    "text": "Non commencé"
+                  }
+                },
+                "type": "special"
+              },
+              {
+                "options": {
+                  "match": "empty",
+                  "result": {
+                    "color": "blue",
+                    "text": "Non commencé"
+                  }
+                },
+                "type": "special"
+              }
+            ],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": 0
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Statut"
+              },
+              "properties": [
+                {
+                  "id": "mappings",
+                  "value": [
+                    {
+                      "options": {
+                        "EN COURS": {
+                          "color": "orange",
+                          "index": 3
+                        },
+                        "EN RETARD (DÉMARRAGE)": {
+                          "color": "red",
+                          "index": 0
+                        },
+                        "EN RETARD (NON DÉMARRÉ)": {
+                          "color": "red",
+                          "index": 2
+                        },
+                        "EN RETARD (OP > 7h)": {
+                          "color": "red",
+                          "index": 1
+                        },
+                        "PLANIFIÉ": {
+                          "color": "blue",
+                          "index": 5
+                        },
+                        "TERMINÉ": {
+                          "color": "green",
+                          "index": 4
+                        }
+                      },
+                      "type": "value"
+                    }
+                  ]
+                },
+                {
+                  "id": "custom.cellOptions",
+                  "value": {
+                    "type": "color-background"
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byRegexp",
+                "options": "/Retard.*/"
+              },
+              "properties": [
+                {
+                  "id": "thresholds",
+                  "value": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": 0
+                      },
+                      {
+                        "color": "transparent",
+                        "value": -0.01
+                      },
+                      {
+                        "color": "red",
+                        "value": 0.01
+                      }
+                    ]
+                  }
+                },
+                {
+                  "id": "custom.cellOptions",
+                  "value": {
+                    "type": "color-text"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 6,
+          "w": 24,
+          "x": 0,
+          "y": 37
+        },
+        "id": 32,
+        "options": {
+          "cellHeight": "sm",
+          "showHeader": true
+        },
+        "pluginVersion": "12.3.1",
+        "targets": [
+          {
+            "format": "table",
+            "rawSql": "SELECT \n  CAST(REPLACE(p.`350`, '.0', '') AS UNSIGNED) AS OF_Num,\n  p.`Heure Début` AS Debut_Theo, \n  o.FirstActivityTime AS Debut_Reel,\n  p.`Heure Fin` AS Fin_Theo,\n  o.LastActivityTime AS Fin_Reelle,\n  \n  CASE \n    WHEN (o.Status IN ('Complete', 'Completed', 'C', 'F') OR o.QtyGood > 0) AND o.LastActivityTime IS NOT NULL AND o.FirstActivityTime IS NOT NULL THEN \n      ROUND(TIMESTAMPDIFF(MINUTE, o.FirstActivityTime, o.LastActivityTime) / 60.0 - 7.0, 1)\n    WHEN o.FirstActivityTime IS NOT NULL AND o.FirstActivityTime != '' THEN \n      ROUND(TIMESTAMPDIFF(MINUTE, o.FirstActivityTime, STR_TO_DATE('${date_ref}', '%Y-%m-%d %H:%i:%s')) / 60.0 - 7.0, 1)\n    ELSE 0 \n  END AS Retard_sur_OP,\n  \n  CASE \n    WHEN (o.Status IN ('Complete', 'Completed', 'C', 'F') OR o.QtyGood > 0) AND o.LastActivityTime IS NOT NULL THEN \n      ROUND(TIMESTAMPDIFF(MINUTE, STR_TO_DATE(CONCAT('2026/', p.`Heure Fin`), '%Y/%d/%m %H:%i'), o.LastActivityTime) / 60.0, 1)\n    WHEN o.FirstActivityTime IS NOT NULL AND o.FirstActivityTime != '' THEN \n      ROUND(GREATEST(\n        TIMESTAMPDIFF(MINUTE, STR_TO_DATE(CONCAT('2026/', p.`Heure Début`), '%Y/%d/%m %H:%i'), o.FirstActivityTime),\n        TIMESTAMPDIFF(MINUTE, STR_TO_DATE(CONCAT('2026/', p.`Heure Fin`), '%Y/%d/%m %H:%i'), STR_TO_DATE('${date_ref}', '%Y-%m-%d %H:%i:%s'))\n      ) / 60.0, 1)\n    ELSE \n      ROUND(GREATEST(0, TIMESTAMPDIFF(MINUTE, STR_TO_DATE(CONCAT('2026/', p.`Heure Début`), '%Y/%d/%m %H:%i'), STR_TO_DATE('${date_ref}', '%Y-%m-%d %H:%i:%s'))) / 60.0, 1)\n  END AS Retard_Total,\n  \n  CASE \n    WHEN (o.Status IN ('Complete', 'Completed', 'C', 'F') OR o.QtyGood > 0) THEN \n      'TERMINÉ'\n    WHEN o.FirstActivityTime IS NOT NULL AND o.FirstActivityTime != '' THEN \n      CASE \n        WHEN TIMESTAMPDIFF(MINUTE, o.FirstActivityTime, STR_TO_DATE('${date_ref}', '%Y-%m-%d %H:%i:%s')) > 7*60 THEN 'EN RETARD (OP > 7h)'\n        WHEN TIMESTAMPDIFF(MINUTE, STR_TO_DATE(CONCAT('2026/', p.`Heure Début`), '%Y/%d/%m %H:%i'), o.FirstActivityTime) > 0 THEN 'EN RETARD (DÉMARRAGE)'\n        ELSE 'EN COURS' \n      END\n    ELSE \n      CASE \n        WHEN TIMESTAMPDIFF(MINUTE, STR_TO_DATE(CONCAT('2026/', p.`Heure Début`), '%Y/%d/%m %H:%i'), STR_TO_DATE('${date_ref}', '%Y-%m-%d %H:%i:%s')) > 0 THEN 'EN RETARD (NON DÉMARRÉ)'\n        ELSE 'PLANIFIÉ' \n      END\n  END AS Statut\n  \nFROM planning_${ligne}_grafana p\nLEFT JOIN orderoperation o ON CAST(REPLACE(p.`350`, '.0', '') AS UNSIGNED) = CAST(o.OrderNum AS UNSIGNED) AND o.OrderStepSequenceNum = 350\nWHERE p.`350` != 'Libre' AND p.`350` IS NOT NULL AND p.`350` != ''",
+            "refId": "A"
+          }
+        ],
+        "title": "Détails des OF - Opération 350",
+        "type": "table"
+      },
+      {
+        "collapsed": false,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 43
+        },
+        "id": 40,
+        "panels": [],
+        "title": "OPERATION 400 (${ligne})",
+        "type": "row"
+      },
+      {
+        "datasource": {
+          "uid": "${datasource}"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "custom": {
+              "align": "center",
+              "cellOptions": {
+                "type": "auto"
+              },
+              "footer": {
+                "reducers": []
+              },
+              "inspect": false
+            },
+            "mappings": [
+              {
+                "options": {
+                  "match": "null",
+                  "result": {
+                    "color": "blue",
+                    "text": "Non commencé"
+                  }
+                },
+                "type": "special"
+              },
+              {
+                "options": {
+                  "match": "empty",
+                  "result": {
+                    "color": "blue",
+                    "text": "Non commencé"
+                  }
+                },
+                "type": "special"
+              }
+            ],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": 0
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Statut"
+              },
+              "properties": [
+                {
+                  "id": "mappings",
+                  "value": [
+                    {
+                      "options": {
+                        "EN COURS": {
+                          "color": "orange",
+                          "index": 3
+                        },
+                        "EN RETARD (DÉMARRAGE)": {
+                          "color": "red",
+                          "index": 0
+                        },
+                        "EN RETARD (NON DÉMARRÉ)": {
+                          "color": "red",
+                          "index": 2
+                        },
+                        "EN RETARD (OP > 7h)": {
+                          "color": "red",
+                          "index": 1
+                        },
+                        "PLANIFIÉ": {
+                          "color": "blue",
+                          "index": 5
+                        },
+                        "TERMINÉ": {
+                          "color": "green",
+                          "index": 4
+                        }
+                      },
+                      "type": "value"
+                    }
+                  ]
+                },
+                {
+                  "id": "custom.cellOptions",
+                  "value": {
+                    "type": "color-background"
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byRegexp",
+                "options": "/Retard.*/"
+              },
+              "properties": [
+                {
+                  "id": "thresholds",
+                  "value": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": 0
+                      },
+                      {
+                        "color": "transparent",
+                        "value": -0.01
+                      },
+                      {
+                        "color": "red",
+                        "value": 0.01
+                      }
+                    ]
+                  }
+                },
+                {
+                  "id": "custom.cellOptions",
+                  "value": {
+                    "type": "color-text"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 6,
+          "w": 24,
+          "x": 0,
+          "y": 44
+        },
+        "id": 42,
+        "options": {
+          "cellHeight": "sm",
+          "showHeader": true
+        },
+        "pluginVersion": "12.3.1",
+        "targets": [
+          {
+            "format": "table",
+            "rawSql": "SELECT \n  CAST(REPLACE(p.`400`, '.0', '') AS UNSIGNED) AS OF_Num,\n  p.`Heure Début` AS Debut_Theo, \n  o.FirstActivityTime AS Debut_Reel,\n  p.`Heure Fin` AS Fin_Theo,\n  o.LastActivityTime AS Fin_Reelle,\n  \n  CASE \n    WHEN (o.Status IN ('Complete', 'Completed', 'C', 'F') OR o.QtyGood > 0) AND o.LastActivityTime IS NOT NULL AND o.FirstActivityTime IS NOT NULL THEN \n      ROUND(TIMESTAMPDIFF(MINUTE, o.FirstActivityTime, o.LastActivityTime) / 60.0 - 7.0, 1)\n    WHEN o.FirstActivityTime IS NOT NULL AND o.FirstActivityTime != '' THEN \n      ROUND(TIMESTAMPDIFF(MINUTE, o.FirstActivityTime, STR_TO_DATE('${date_ref}', '%Y-%m-%d %H:%i:%s')) / 60.0 - 7.0, 1)\n    ELSE 0 \n  END AS Retard_sur_OP,\n  \n  CASE \n    WHEN (o.Status IN ('Complete', 'Completed', 'C', 'F') OR o.QtyGood > 0) AND o.LastActivityTime IS NOT NULL THEN \n      ROUND(TIMESTAMPDIFF(MINUTE, STR_TO_DATE(CONCAT('2026/', p.`Heure Fin`), '%Y/%d/%m %H:%i'), o.LastActivityTime) / 60.0, 1)\n    WHEN o.FirstActivityTime IS NOT NULL AND o.FirstActivityTime != '' THEN \n      ROUND(GREATEST(\n        TIMESTAMPDIFF(MINUTE, STR_TO_DATE(CONCAT('2026/', p.`Heure Début`), '%Y/%d/%m %H:%i'), o.FirstActivityTime),\n        TIMESTAMPDIFF(MINUTE, STR_TO_DATE(CONCAT('2026/', p.`Heure Fin`), '%Y/%d/%m %H:%i'), STR_TO_DATE('${date_ref}', '%Y-%m-%d %H:%i:%s'))\n      ) / 60.0, 1)\n    ELSE \n      ROUND(GREATEST(0, TIMESTAMPDIFF(MINUTE, STR_TO_DATE(CONCAT('2026/', p.`Heure Début`), '%Y/%d/%m %H:%i'), STR_TO_DATE('${date_ref}', '%Y-%m-%d %H:%i:%s'))) / 60.0, 1)\n  END AS Retard_Total,\n  \n  CASE \n    WHEN (o.Status IN ('Complete', 'Completed', 'C', 'F') OR o.QtyGood > 0) THEN \n      'TERMINÉ'\n    WHEN o.FirstActivityTime IS NOT NULL AND o.FirstActivityTime != '' THEN \n      CASE \n        WHEN TIMESTAMPDIFF(MINUTE, o.FirstActivityTime, STR_TO_DATE('${date_ref}', '%Y-%m-%d %H:%i:%s')) > 7*60 THEN 'EN RETARD (OP > 7h)'\n        WHEN TIMESTAMPDIFF(MINUTE, STR_TO_DATE(CONCAT('2026/', p.`Heure Début`), '%Y/%d/%m %H:%i'), o.FirstActivityTime) > 0 THEN 'EN RETARD (DÉMARRAGE)'\n        ELSE 'EN COURS' \n      END\n    ELSE \n      CASE \n        WHEN TIMESTAMPDIFF(MINUTE, STR_TO_DATE(CONCAT('2026/', p.`Heure Début`), '%Y/%d/%m %H:%i'), STR_TO_DATE('${date_ref}', '%Y-%m-%d %H:%i:%s')) > 0 THEN 'EN RETARD (NON DÉMARRÉ)'\n        ELSE 'PLANIFIÉ' \n      END\n  END AS Statut\n  \nFROM planning_${ligne}_grafana p\nLEFT JOIN orderoperation o ON CAST(REPLACE(p.`400`, '.0', '') AS UNSIGNED) = CAST(o.OrderNum AS UNSIGNED) AND o.OrderStepSequenceNum = 400\nWHERE p.`400` != 'Libre' AND p.`400` IS NOT NULL AND p.`400` != ''",
+            "refId": "A"
+          }
+        ],
+        "title": "Détails des OF - Opération 400",
+        "type": "table"
+      },
+      {
+        "collapsed": false,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 50
+        },
+        "id": 50,
+        "panels": [],
+        "title": "OPERATION 900 (${ligne})",
+        "type": "row"
+      },
+      {
+        "datasource": {
+          "uid": "${datasource}"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "custom": {
+              "align": "center",
+              "cellOptions": {
+                "type": "auto"
+              },
+              "footer": {
+                "reducers": []
+              },
+              "inspect": false
+            },
+            "mappings": [
+              {
+                "options": {
+                  "match": "null",
+                  "result": {
+                    "color": "blue",
+                    "text": "Non commencé"
+                  }
+                },
+                "type": "special"
+              },
+              {
+                "options": {
+                  "match": "empty",
+                  "result": {
+                    "color": "blue",
+                    "text": "Non commencé"
+                  }
+                },
+                "type": "special"
+              }
+            ],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": 0
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Statut"
+              },
+              "properties": [
+                {
+                  "id": "mappings",
+                  "value": [
+                    {
+                      "options": {
+                        "EN COURS": {
+                          "color": "orange",
+                          "index": 3
+                        },
+                        "EN RETARD (DÉMARRAGE)": {
+                          "color": "red",
+                          "index": 0
+                        },
+                        "EN RETARD (NON DÉMARRÉ)": {
+                          "color": "red",
+                          "index": 2
+                        },
+                        "EN RETARD (OP > 7h)": {
+                          "color": "red",
+                          "index": 1
+                        },
+                        "PLANIFIÉ": {
+                          "color": "blue",
+                          "index": 5
+                        },
+                        "TERMINÉ": {
+                          "color": "green",
+                          "index": 4
+                        }
+                      },
+                      "type": "value"
+                    }
+                  ]
+                },
+                {
+                  "id": "custom.cellOptions",
+                  "value": {
+                    "type": "color-background"
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byRegexp",
+                "options": "/Retard.*/"
+              },
+              "properties": [
+                {
+                  "id": "thresholds",
+                  "value": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": 0
+                      },
+                      {
+                        "color": "transparent",
+                        "value": -0.01
+                      },
+                      {
+                        "color": "red",
+                        "value": 0.01
+                      }
+                    ]
+                  }
+                },
+                {
+                  "id": "custom.cellOptions",
+                  "value": {
+                    "type": "color-text"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 6,
+          "w": 24,
+          "x": 0,
+          "y": 51
+        },
+        "id": 52,
+        "options": {
+          "cellHeight": "sm",
+          "showHeader": true
+        },
+        "pluginVersion": "12.3.1",
+        "targets": [
+          {
+            "format": "table",
+            "rawSql": "SELECT \n  CAST(REPLACE(p.`900`, '.0', '') AS UNSIGNED) AS OF_Num,\n  p.`Heure Début` AS Debut_Theo, \n  o.FirstActivityTime AS Debut_Reel,\n  p.`Heure Fin` AS Fin_Theo,\n  o.LastActivityTime AS Fin_Reelle,\n  \n  CASE \n    WHEN (o.Status IN ('Complete', 'Completed', 'C', 'F') OR o.QtyGood > 0) AND o.LastActivityTime IS NOT NULL AND o.FirstActivityTime IS NOT NULL THEN \n      ROUND(TIMESTAMPDIFF(MINUTE, o.FirstActivityTime, o.LastActivityTime) / 60.0 - 7.0, 1)\n    WHEN o.FirstActivityTime IS NOT NULL AND o.FirstActivityTime != '' THEN \n      ROUND(TIMESTAMPDIFF(MINUTE, o.FirstActivityTime, STR_TO_DATE('${date_ref}', '%Y-%m-%d %H:%i:%s')) / 60.0 - 7.0, 1)\n    ELSE 0 \n  END AS Retard_sur_OP,\n  \n  CASE \n    WHEN (o.Status IN ('Complete', 'Completed', 'C', 'F') OR o.QtyGood > 0) AND o.LastActivityTime IS NOT NULL THEN \n      ROUND(TIMESTAMPDIFF(MINUTE, STR_TO_DATE(CONCAT('2026/', p.`Heure Fin`), '%Y/%d/%m %H:%i'), o.LastActivityTime) / 60.0, 1)\n    WHEN o.FirstActivityTime IS NOT NULL AND o.FirstActivityTime != '' THEN \n      ROUND(GREATEST(\n        TIMESTAMPDIFF(MINUTE, STR_TO_DATE(CONCAT('2026/', p.`Heure Début`), '%Y/%d/%m %H:%i'), o.FirstActivityTime),\n        TIMESTAMPDIFF(MINUTE, STR_TO_DATE(CONCAT('2026/', p.`Heure Fin`), '%Y/%d/%m %H:%i'), STR_TO_DATE('${date_ref}', '%Y-%m-%d %H:%i:%s'))\n      ) / 60.0, 1)\n    ELSE \n      ROUND(GREATEST(0, TIMESTAMPDIFF(MINUTE, STR_TO_DATE(CONCAT('2026/', p.`Heure Début`), '%Y/%d/%m %H:%i'), STR_TO_DATE('${date_ref}', '%Y-%m-%d %H:%i:%s'))) / 60.0, 1)\n  END AS Retard_Total,\n  \n  CASE \n    WHEN (o.Status IN ('Complete', 'Completed', 'C', 'F') OR o.QtyGood > 0) THEN \n      'TERMINÉ'\n    WHEN o.FirstActivityTime IS NOT NULL AND o.FirstActivityTime != '' THEN \n      CASE \n        WHEN TIMESTAMPDIFF(MINUTE, o.FirstActivityTime, STR_TO_DATE('${date_ref}', '%Y-%m-%d %H:%i:%s')) > 7*60 THEN 'EN RETARD (OP > 7h)'\n        WHEN TIMESTAMPDIFF(MINUTE, STR_TO_DATE(CONCAT('2026/', p.`Heure Début`), '%Y/%d/%m %H:%i'), o.FirstActivityTime) > 0 THEN 'EN RETARD (DÉMARRAGE)'\n        ELSE 'EN COURS' \n      END\n    ELSE \n      CASE \n        WHEN TIMESTAMPDIFF(MINUTE, STR_TO_DATE(CONCAT('2026/', p.`Heure Début`), '%Y/%d/%m %H:%i'), STR_TO_DATE('${date_ref}', '%Y-%m-%d %H:%i:%s')) > 0 THEN 'EN RETARD (NON DÉMARRÉ)'\n        ELSE 'PLANIFIÉ' \n      END\n  END AS Statut\n  \nFROM planning_${ligne}_grafana p\nLEFT JOIN orderoperation o ON CAST(REPLACE(p.`900`, '.0', '') AS UNSIGNED) = CAST(o.OrderNum AS UNSIGNED) AND o.OrderStepSequenceNum = 900\nWHERE p.`900` != 'Libre' AND p.`900` IS NOT NULL AND p.`900` != ''",
+            "refId": "A"
+          }
+        ],
+        "title": "Détails des OF - Opération 900",
+        "type": "table"
+      },
+      {
+        "collapsed": false,
+        "gridPos": {
+          "h": 1,
+          "w": 24,
+          "x": 0,
+          "y": 57
+        },
+        "id": 60,
+        "panels": [],
+        "title": "OPERATION 990 (${ligne})",
+        "type": "row"
+      },
+      {
+        "datasource": {
+          "uid": "${datasource}"
+        },
+        "fieldConfig": {
+          "defaults": {
+            "custom": {
+              "align": "center",
+              "cellOptions": {
+                "type": "auto"
+              },
+              "footer": {
+                "reducers": []
+              },
+              "inspect": false
+            },
+            "mappings": [
+              {
+                "options": {
+                  "match": "null",
+                  "result": {
+                    "color": "blue",
+                    "text": "Non commencé"
+                  }
+                },
+                "type": "special"
+              },
+              {
+                "options": {
+                  "match": "empty",
+                  "result": {
+                    "color": "blue",
+                    "text": "Non commencé"
+                  }
+                },
+                "type": "special"
+              }
+            ],
+            "thresholds": {
+              "mode": "absolute",
+              "steps": [
+                {
+                  "color": "green",
+                  "value": 0
+                },
+                {
+                  "color": "red",
+                  "value": 80
+                }
+              ]
+            }
+          },
+          "overrides": [
+            {
+              "matcher": {
+                "id": "byName",
+                "options": "Statut"
+              },
+              "properties": [
+                {
+                  "id": "mappings",
+                  "value": [
+                    {
+                      "options": {
+                        "EN COURS": {
+                          "color": "orange",
+                          "index": 3
+                        },
+                        "EN RETARD (DÉMARRAGE)": {
+                          "color": "red",
+                          "index": 0
+                        },
+                        "EN RETARD (NON DÉMARRÉ)": {
+                          "color": "red",
+                          "index": 2
+                        },
+                        "EN RETARD (OP > 7h)": {
+                          "color": "red",
+                          "index": 1
+                        },
+                        "PLANIFIÉ": {
+                          "color": "blue",
+                          "index": 5
+                        },
+                        "TERMINÉ": {
+                          "color": "green",
+                          "index": 4
+                        }
+                      },
+                      "type": "value"
+                    }
+                  ]
+                },
+                {
+                  "id": "custom.cellOptions",
+                  "value": {
+                    "type": "color-background"
+                  }
+                }
+              ]
+            },
+            {
+              "matcher": {
+                "id": "byRegexp",
+                "options": "/Retard.*/"
+              },
+              "properties": [
+                {
+                  "id": "thresholds",
+                  "value": {
+                    "mode": "absolute",
+                    "steps": [
+                      {
+                        "color": "green",
+                        "value": 0
+                      },
+                      {
+                        "color": "transparent",
+                        "value": -0.01
+                      },
+                      {
+                        "color": "red",
+                        "value": 0.01
+                      }
+                    ]
+                  }
+                },
+                {
+                  "id": "custom.cellOptions",
+                  "value": {
+                    "type": "color-text"
+                  }
+                }
+              ]
+            }
+          ]
+        },
+        "gridPos": {
+          "h": 6,
+          "w": 24,
+          "x": 0,
+          "y": 58
+        },
+        "id": 62,
+        "options": {
+          "cellHeight": "sm",
+          "showHeader": true
+        },
+        "pluginVersion": "12.3.1",
+        "targets": [
+          {
+            "format": "table",
+            "rawSql": "SELECT \n  CAST(REPLACE(p.`990`, '.0', '') AS UNSIGNED) AS OF_Num,\n  p.`Heure Début` AS Debut_Theo, \n  o.FirstActivityTime AS Debut_Reel,\n  p.`Heure Fin` AS Fin_Theo,\n  o.LastActivityTime AS Fin_Reelle,\n  \n  CASE \n    WHEN (o.Status IN ('Complete', 'Completed', 'C', 'F') OR o.QtyGood > 0) AND o.LastActivityTime IS NOT NULL AND o.FirstActivityTime IS NOT NULL THEN \n      ROUND(TIMESTAMPDIFF(MINUTE, o.FirstActivityTime, o.LastActivityTime) / 60.0 - 7.0, 1)\n    WHEN o.FirstActivityTime IS NOT NULL AND o.FirstActivityTime != '' THEN \n      ROUND(TIMESTAMPDIFF(MINUTE, o.FirstActivityTime, STR_TO_DATE('${date_ref}', '%Y-%m-%d %H:%i:%s')) / 60.0 - 7.0, 1)\n    ELSE 0 \n  END AS Retard_sur_OP,\n  \n  CASE \n    WHEN (o.Status IN ('Complete', 'Completed', 'C', 'F') OR o.QtyGood > 0) AND o.LastActivityTime IS NOT NULL THEN \n      ROUND(TIMESTAMPDIFF(MINUTE, STR_TO_DATE(CONCAT('2026/', p.`Heure Fin`), '%Y/%d/%m %H:%i'), o.LastActivityTime) / 60.0, 1)\n    WHEN o.FirstActivityTime IS NOT NULL AND o.FirstActivityTime != '' THEN \n      ROUND(GREATEST(\n        TIMESTAMPDIFF(MINUTE, STR_TO_DATE(CONCAT('2026/', p.`Heure Début`), '%Y/%d/%m %H:%i'), o.FirstActivityTime),\n        TIMESTAMPDIFF(MINUTE, STR_TO_DATE(CONCAT('2026/', p.`Heure Fin`), '%Y/%d/%m %H:%i'), STR_TO_DATE('${date_ref}', '%Y-%m-%d %H:%i:%s'))\n      ) / 60.0, 1)\n    ELSE \n      ROUND(GREATEST(0, TIMESTAMPDIFF(MINUTE, STR_TO_DATE(CONCAT('2026/', p.`Heure Début`), '%Y/%d/%m %H:%i'), STR_TO_DATE('${date_ref}', '%Y-%m-%d %H:%i:%s'))) / 60.0, 1)\n  END AS Retard_Total,\n  \n  CASE \n    WHEN (o.Status IN ('Complete', 'Completed', 'C', 'F') OR o.QtyGood > 0) THEN \n      'TERMINÉ'\n    WHEN o.FirstActivityTime IS NOT NULL AND o.FirstActivityTime != '' THEN \n      CASE \n        WHEN TIMESTAMPDIFF(MINUTE, o.FirstActivityTime, STR_TO_DATE('${date_ref}', '%Y-%m-%d %H:%i:%s')) > 7*60 THEN 'EN RETARD (OP > 7h)'\n        WHEN TIMESTAMPDIFF(MINUTE, STR_TO_DATE(CONCAT('2026/', p.`Heure Début`), '%Y/%d/%m %H:%i'), o.FirstActivityTime) > 0 THEN 'EN RETARD (DÉMARRAGE)'\n        ELSE 'EN COURS' \n      END\n    ELSE \n      CASE \n        WHEN TIMESTAMPDIFF(MINUTE, STR_TO_DATE(CONCAT('2026/', p.`Heure Début`), '%Y/%d/%m %H:%i'), STR_TO_DATE('${date_ref}', '%Y-%m-%d %H:%i:%s')) > 0 THEN 'EN RETARD (NON DÉMARRÉ)'\n        ELSE 'PLANIFIÉ' \n      END\n  END AS Statut\n  \nFROM planning_${ligne}_grafana p\nLEFT JOIN orderoperation o ON CAST(REPLACE(p.`990`, '.0', '') AS UNSIGNED) = CAST(o.OrderNum AS UNSIGNED) AND o.OrderStepSequenceNum = 990\nWHERE p.`990` != 'Libre' AND p.`990` IS NOT NULL AND p.`990` != ''",
+            "refId": "A"
+          }
+        ],
+        "title": "Détails des OF - Opération 990",
+        "type": "table"
+      }
+    ],
+    "preload": false,
+    "refresh": "",
+    "schemaVersion": 42,
+    "tags": [],
+    "templating": {
+      "list": [
+        {
+          "current": {
+            "text": "mysql",
+            "value": "aff3633u5xtdsd"
+          },
+          "includeAll": false,
+          "name": "datasource",
+          "options": [],
+          "query": "mysql",
+          "refresh": 1,
+          "type": "datasource"
+        },
+        {
+          "current": {
+            "text": "nlg",
+            "value": "nlg"
+          },
+          "name": "ligne",
+          "options": [
+            {
+              "selected": true,
+              "text": "nlg",
+              "value": "nlg"
+            },
+            {
+              "selected": false,
+              "text": "mlg",
+              "value": "mlg"
+            }
+          ],
+          "query": "nlg, mlg",
+          "type": "custom"
+        },
+        {
+          "current": {
+            "text": "2026-01-27 12:58:00",
+            "value": "2026-01-27 12:58:00"
+          },
+          "name": "date_ref",
+          "options": [
+            {
+              "selected": true,
+              "text": "2026-01-27 12:58:00",
+              "value": "2026-01-27 12:58:00"
+            }
+          ],
+          "query": "2026-01-27 12:58:00",
+          "type": "textbox"
+        }
+      ]
+    },
+    "time": {
+      "from": "2026-01-27T11:00:00.000Z",
+      "to": "2026-01-27T11:58:00.000Z"
+    },
+    "timepicker": {},
+    "timezone": "",
+    "title": "Dashboard Opérations v7",
+    "uid": "9806f40d-d65d-44cb-8090-0d4e3abcb370",
+    "version": 16
+  }
